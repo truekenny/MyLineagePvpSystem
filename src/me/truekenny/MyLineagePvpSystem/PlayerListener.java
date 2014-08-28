@@ -51,7 +51,7 @@ public class PlayerListener implements Listener {
      */
     private void died(Player player) {
         // Уменьшить карму
-        plugin.log("died: " + player.getName() + " умер");
+        plugin.log("died: " + player.getName() + " умер", plugin.ANSI_RED);
     }
 
     /**
@@ -62,7 +62,7 @@ public class PlayerListener implements Listener {
      */
     private void murder(Player player, Player killer) {
         //
-        plugin.log("murder: " + killer.getName() + " убил " + player.getName());
+        plugin.log("murder: " + killer.getName() + " убил " + player.getName(), plugin.ANSI_RED);
     }
 
     private static final Set<String> types = new HashSet<String>(Arrays.asList(
@@ -102,7 +102,7 @@ public class PlayerListener implements Listener {
      * @param player
      */
     private void cleansing(Player player) {
-        plugin.log("cleansing: " + player.getName() + " чистит карму");
+        plugin.log("cleansing: " + player.getName() + " чистит карму", plugin.ANSI_RED);
     }
 
     /**
@@ -161,7 +161,7 @@ public class PlayerListener implements Listener {
      * @param damager
      */
     private void hit(Player player, Player damager) {
-        plugin.log("hit: " + damager.getName() + " ударил " + player.getName());
+        plugin.log("hit: " + damager.getName() + " ударил " + player.getName(), plugin.ANSI_RED);
     }
 }
 
