@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 import org.kitteh.tag.TagAPI;
 
@@ -192,7 +193,7 @@ public class PlayerListener implements Listener {
     public void onNameTag(AsyncPlayerReceiveNameTagEvent event) {
         Player player = event.getNamedPlayer();
         event.setTag(getPlayerColor(player) + player.getName());
-        plugin.log("onNameTag: " + player.getName());
+        // plugin.log("onNameTag: " + player.getName());
     }
 
     /**
@@ -203,6 +204,12 @@ public class PlayerListener implements Listener {
      */
     private ChatColor getPlayerColor(Player player) {
         return plugin.players.getPlayerData(player).getColor();
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        plugin.log("onPlayerMove: ");
+        plugin.players.updateNicks();
     }
 }
 

@@ -87,15 +87,15 @@ public class PlayerData {
             return ChatColor.RED;
         }
 
-        if (System.currentTimeMillis() / 1000L < unixTime + 5) {
+        if (System.currentTimeMillis() / 1000L < unixTime + 25) {
 
-            return ChatColor.LIGHT_PURPLE;
+            return ChatColor.DARK_PURPLE;
         }
 
 
         if (System.currentTimeMillis() / 1000L < unixTime + 30) {
 
-            return ChatColor.DARK_PURPLE;
+            return ChatColor.LIGHT_PURPLE;
         }
 
         return ChatColor.WHITE;
