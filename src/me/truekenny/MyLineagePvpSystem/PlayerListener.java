@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 import org.kitteh.tag.TagAPI;
 
@@ -74,11 +75,43 @@ public class PlayerListener implements Listener {
      * @param player
      * @param killer
      */
-    private void murder(PlayerDeathEvent event, Player player, Player killer) {
-        // Дропнуть инверторию и экспу, если не белый
+    private void murder(PlayerDeathEvent event, final Player player, Player killer) {
         if (plugin.players.getPlayerData(player).getColor().equals(ChatColor.WHITE)) {
+            // Сохранить ЭКСП
             event.setKeepLevel(true);
             event.setDroppedExp(0);
+
+            // Сохранить броню
+            final ItemStack[] armor = player.getInventory().getArmorContents();
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    player.getInventory().setArmorContents(armor);
+                }
+
+            });
+            for (ItemStack is : armor) {
+                event.getDrops().remove(is);
+            }
+
+            // Сохранить броню
+            final ItemStack[] inventory = player.getInventory().getContents();
+            for (int i = 0; i < inventory.length; i++) {
+                ItemStack is = inventory[i];
+
+                if (is != null && Math.random() < 0.95)
+                    event.getDrops().remove(is);
+                else
+                    inventory[i] = null;
+            }
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+
+                @Override
+                public void run() {
+                    player.getInventory().setContents(inventory);
+                }
+
+            });
         }
 
         //
