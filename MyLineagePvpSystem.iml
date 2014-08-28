@@ -8,6 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bukkit-1.7.10-R0.1-20140710.000649-3" level="project" />
+    <orderEntry type="library" name="TagAPI" level="project" />
   </component>
 </module>
 

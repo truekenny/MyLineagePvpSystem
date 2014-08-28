@@ -1,18 +1,28 @@
 package me.truekenny.MyLineagePvpSystem;
 
-import org.bukkit.entity.*;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
+import org.kitteh.tag.TagAPI;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerListener implements Listener {
+    private static final Set<String> types = new HashSet<String>(Arrays.asList(
+            new String[]{"SHEEP", "COW", "ZOMBIE", "SKELETON"}
+    ));
+    
     /**
      * Экземпляр главного класса плагина
      */
@@ -52,6 +62,9 @@ public class PlayerListener implements Listener {
     private void died(Player player) {
         // Уменьшить карму
         plugin.log("died: " + player.getName() + " умер", plugin.ANSI_RED);
+        if (plugin.players.getPlayerData(player).died()) {
+            TagAPI.refreshPlayer(player);
+        }
     }
 
     /**
@@ -63,11 +76,10 @@ public class PlayerListener implements Listener {
     private void murder(Player player, Player killer) {
         //
         plugin.log("murder: " + killer.getName() + " убил " + player.getName(), plugin.ANSI_RED);
+        if (plugin.players.getPlayerData(killer).murder(player)) {
+            TagAPI.refreshPlayer(killer);
+        }
     }
-
-    private static final Set<String> types = new HashSet<String>(Arrays.asList(
-            new String[]{"SHEEP", "COW", "ZOMBIE", "SKELETON"}
-    ));
 
     /**
      * Обрабатывает событие Смерть моба
@@ -103,6 +115,9 @@ public class PlayerListener implements Listener {
      */
     private void cleansing(Player player) {
         plugin.log("cleansing: " + player.getName() + " чистит карму", plugin.ANSI_RED);
+        if(plugin.players.getPlayerData(player).cleansing()) {
+            TagAPI.refreshPlayer(player);
+        }
     }
 
     /**
@@ -162,6 +177,32 @@ public class PlayerListener implements Listener {
      */
     private void hit(Player player, Player damager) {
         plugin.log("hit: " + damager.getName() + " ударил " + player.getName(), plugin.ANSI_RED);
+
+        if(plugin.players.getPlayerData(damager).hit(player)) {
+            TagAPI.refreshPlayer(damager);
+        }
+    }
+
+    /**
+     * Отдать цвет имени пользователя
+     *
+     * @param event
+     */
+    @EventHandler
+    public void onNameTag(AsyncPlayerReceiveNameTagEvent event) {
+        Player player = event.getNamedPlayer();
+        event.setTag(getPlayerColor(player) + player.getName());
+        plugin.log("onNameTag: " + player.getName());
+    }
+
+    /**
+     * Возвращает цвет ника пользователя
+     *
+     * @param player
+     * @return
+     */
+    private ChatColor getPlayerColor(Player player) {
+        return plugin.players.getPlayerData(player).getColor();
     }
 }
 
