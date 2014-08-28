@@ -49,7 +49,7 @@ public class PlayerListener implements Listener {
         if (killer != null && killer.getType().toString().equalsIgnoreCase("player")) {
             plugin.log("onPlayerDeath: killer: " + ((Player) killer).getName());
 
-            murder(player, killer);
+            murder(event, player, killer);
         }
 
         died(player);
@@ -74,7 +74,13 @@ public class PlayerListener implements Listener {
      * @param player
      * @param killer
      */
-    private void murder(Player player, Player killer) {
+    private void murder(PlayerDeathEvent event, Player player, Player killer) {
+        // Дропнуть инверторию и экспу, если не белый
+        if (plugin.players.getPlayerData(player).getColor().equals(ChatColor.WHITE)) {
+            event.setKeepLevel(true);
+            event.setDroppedExp(0);
+        }
+
         //
         plugin.log("murder: " + killer.getName() + " убил " + player.getName(), plugin.ANSI_RED);
         if (plugin.players.getPlayerData(killer).murder(player)) {
@@ -116,7 +122,7 @@ public class PlayerListener implements Listener {
      */
     private void cleansing(Player player) {
         plugin.log("cleansing: " + player.getName() + " чистит карму", plugin.ANSI_RED);
-        if(plugin.players.getPlayerData(player).cleansing()) {
+        if (plugin.players.getPlayerData(player).cleansing()) {
             TagAPI.refreshPlayer(player);
         }
     }
@@ -179,7 +185,7 @@ public class PlayerListener implements Listener {
     private void hit(Player player, Player damager) {
         plugin.log("hit: " + damager.getName() + " ударил " + player.getName(), plugin.ANSI_RED);
 
-        if(plugin.players.getPlayerData(damager).hit(player)) {
+        if (plugin.players.getPlayerData(damager).hit(player)) {
             TagAPI.refreshPlayer(damager);
         }
     }
