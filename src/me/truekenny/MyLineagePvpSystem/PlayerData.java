@@ -7,11 +7,17 @@ public class PlayerData {
     private int karma = 0;
     private long unixTime = 0; // System.currentTimeMillis() / 1000L;
     private Players players;
+    private ChatColor lastColor = ChatColor.WHITE;
 
     public PlayerData(Players players) {
         this.players = players;
     }
 
+    /**
+     * Убивает player
+     * @param player
+     * @return
+     */
     public boolean murder(Player player) {
         int _karma = karma;
         if (players.getPlayerData(player).getColor().equals(ChatColor.WHITE)) {
@@ -23,6 +29,10 @@ public class PlayerData {
         return false;
     }
 
+    /**
+     * Умирает
+     * @return
+     */
     public boolean died() {
         int _karma = karma;
         karma += 10;
@@ -33,6 +43,10 @@ public class PlayerData {
         return false;
     }
 
+    /**
+     * Убивает моба
+     * @return
+     */
     public boolean cleansing() {
         int _karma = karma;
 
@@ -44,6 +58,11 @@ public class PlayerData {
         return false;
     }
 
+    /**
+     * Ударяет игрока player
+     * @param player
+     * @return
+     */
     public boolean hit(Player player) {
         if (players.getPlayerData(player).getColor().equals(ChatColor.RED)) {
 
@@ -58,6 +77,10 @@ public class PlayerData {
         return result;
     }
 
+    /**
+     * Возвращает цвет игрока
+     * @return
+     */
     public ChatColor getColor() {
         if (karma < 0) {
 
@@ -78,5 +101,20 @@ public class PlayerData {
         return ChatColor.WHITE;
     }
 
+    /**
+     * Возвращает статус того, что цвет был изменён
+     * @return
+     */
+    public boolean colorChanged() {
+        ChatColor _lastColor = getColor();
 
+        if(_lastColor.equals(lastColor)) {
+
+            return false;
+        }
+
+        lastColor = _lastColor;
+
+        return true;
+    }
 }

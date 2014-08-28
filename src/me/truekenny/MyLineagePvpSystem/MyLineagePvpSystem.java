@@ -11,7 +11,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
     public Players players;
 
     public void onEnable() {
-        players = new Players();
+        players = new Players(this);
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerListener(this), this);
@@ -20,7 +20,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
     }
 
     public void onDisable() {
-        players = null;
+        players.destroy();
 
         log("MyLineagePvpSystem has been disabled.");
     }
@@ -40,7 +40,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
     }
 
     public void log(String text) {
-        this.log.info(ANSI_PURPLE + text + ANSI_RESET);
+        this.log.info(ANSI_GREEN + text + ANSI_RESET);
     }
 
 }

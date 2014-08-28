@@ -22,7 +22,7 @@ public class PlayerListener implements Listener {
     private static final Set<String> types = new HashSet<String>(Arrays.asList(
             new String[]{"SHEEP", "COW", "ZOMBIE", "SKELETON"}
     ));
-    
+
     /**
      * Экземпляр главного класса плагина
      */
