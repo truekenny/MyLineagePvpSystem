@@ -208,8 +208,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        plugin.log("onPlayerMove: ");
-        plugin.players.updateNicks();
+        //plugin.log("onPlayerMove: ");
+        //plugin.players.updateNicks();
     }
 }
 

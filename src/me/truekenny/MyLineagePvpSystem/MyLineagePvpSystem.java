@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 public class MyLineagePvpSystem extends JavaPlugin {
     private Logger log = Logger.getLogger("Minecraft");
     public Players players;
+    private int taskId;
 
     public void onEnable() {
         players = new Players(this);
@@ -17,10 +18,13 @@ public class MyLineagePvpSystem extends JavaPlugin {
         pm.registerEvents(new PlayerListener(this), this);
 
         log("MyLineagePvpSystem has been enabled!");
+
+        taskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, new ColorTask(this), 0, 20);
     }
 
     public void onDisable() {
         players.destroy();
+        getServer().getScheduler().cancelTask(taskId);
 
         log("MyLineagePvpSystem has been disabled.");
     }
