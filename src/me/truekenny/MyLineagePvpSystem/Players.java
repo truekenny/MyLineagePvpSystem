@@ -4,10 +4,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.kitteh.tag.TagAPI;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 public class Players {
+    final public String FILENAME = "pvpplayers.data";
     private Hashtable<String, PlayerData> playerDataHashtable = new Hashtable<String, PlayerData>();
     private MyLineagePvpSystem plugin;
 
@@ -18,6 +24,7 @@ public class Players {
      */
     public Players(MyLineagePvpSystem plugin) {
         this.plugin = plugin;
+        load();
     }
 
     /**
@@ -91,7 +98,7 @@ public class Players {
     /**
      * Отправлляет общую информацию
      *
-     * @param nick
+     * @param player
      */
     public void sendStatusMessage(Player player) {
         PlayerData playerData = getPlayerData(player);
@@ -117,5 +124,76 @@ public class Players {
      * Деструктор
      */
     public void destroy() {
+        save();
+    }
+
+    /**
+     * Загрузка данных
+     * @return
+     */
+    private boolean load() {
+        BufferedReader br = null;
+
+        try {
+
+            String sCurrentLine;
+
+            br = new BufferedReader(new FileReader(FILENAME));
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                plugin.log(sCurrentLine, plugin.ANSI_BLUE);
+
+                StringTokenizer st = new StringTokenizer(sCurrentLine);
+                String nick = st.nextToken();
+                String pk = st.nextToken();
+                String pvp = st.nextToken();
+                String karma = st.nextToken();
+                String death = st.nextToken();
+
+                PlayerData playerData = new PlayerData(this);
+                playerData.setPk(Integer.parseInt(pk));
+                playerData.setPvp(Integer.parseInt(pvp));
+                playerData.setKarma(Integer.parseInt(karma));
+                playerData.setDeath(Integer.parseInt(death));
+                playerDataHashtable.put(nick, playerData);
+
+            }
+
+        } catch (IOException e) {
+            plugin.log("File " + FILENAME + " not found");
+        } finally {
+            try {
+                if (br != null) br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Сохранение данных
+     * @return
+     */
+    private boolean save() {
+        Enumeration<String> e = playerDataHashtable.keys();
+        PrintWriter out;
+        try {
+            out = new PrintWriter(FILENAME);
+        } catch (Exception ex) {
+            return false;
+        }
+
+        while (e.hasMoreElements()) {
+            String nick = e.nextElement();
+            PlayerData playerData = playerDataHashtable.get(nick);
+
+            out.printf("%s %d %d %d %d\n", nick, playerData.getPk(), playerData.getPvp(), playerData.getKarma(), playerData.getDeath());
+        }
+
+        out.close();
+
+        return true;
     }
 }

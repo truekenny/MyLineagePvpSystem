@@ -145,4 +145,20 @@ public class PlayerData {
     public int getDeath() {
         return death;
     }
+
+    public void setPk(int pk) {
+        this.pk = pk;
+    }
+
+    public void setPvp(int pvp) {
+        this.pvp = pvp;
+    }
+
+    public void setKarma(int karma) {
+        this.karma = karma;
+    }
+
+    public void setDeath(int death) {
+        this.death = death;
+    }
 }
