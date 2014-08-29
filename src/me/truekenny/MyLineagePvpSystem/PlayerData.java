@@ -8,6 +8,9 @@ public class PlayerData {
     private long unixTime = 0; // System.currentTimeMillis() / 1000L;
     private Players players;
     private ChatColor lastColor = ChatColor.WHITE;
+    private int pvp = 0;
+    private int pk = 0;
+    private int death = 0;
 
     public PlayerData(Players players) {
         this.players = players;
@@ -15,6 +18,7 @@ public class PlayerData {
 
     /**
      * Убивает player
+     *
      * @param player
      * @return
      */
@@ -22,15 +26,18 @@ public class PlayerData {
         int _karma = karma;
         if (players.getPlayerData(player).getColor().equals(ChatColor.WHITE)) {
             karma -= 10;
+            pk++;
 
-            if(_karma == 0 && karma < 0) return true;
+            if (_karma == 0 && karma < 0) return true;
         }
 
+        pvp++;
         return false;
     }
 
     /**
      * Умирает
+     *
      * @return
      */
     public boolean died() {
@@ -38,13 +45,15 @@ public class PlayerData {
         karma += 10;
         if (karma > 0) karma = 0;
 
-        if(_karma < 0 && karma == 0) return true;
+        death++;
+        if (_karma < 0 && karma == 0) return true;
 
         return false;
     }
 
     /**
      * Убивает моба
+     *
      * @return
      */
     public boolean cleansing() {
@@ -53,13 +62,14 @@ public class PlayerData {
         karma += 1;
         if (karma > 0) karma = 0;
 
-        if(_karma < 0 && karma == 0) return true;
+        if (_karma < 0 && karma == 0) return true;
 
         return false;
     }
 
     /**
      * Ударяет игрока player
+     *
      * @param player
      * @return
      */
@@ -79,6 +89,7 @@ public class PlayerData {
 
     /**
      * Возвращает цвет игрока
+     *
      * @return
      */
     public ChatColor getColor() {
@@ -103,12 +114,13 @@ public class PlayerData {
 
     /**
      * Возвращает статус того, что цвет был изменён
+     *
      * @return
      */
     public boolean colorChanged() {
         ChatColor _lastColor = getColor();
 
-        if(_lastColor.equals(lastColor)) {
+        if (_lastColor.equals(lastColor)) {
 
             return false;
         }
@@ -116,5 +128,21 @@ public class PlayerData {
         lastColor = _lastColor;
 
         return true;
+    }
+
+    public int getPk() {
+        return pk;
+    }
+
+    public int getPvp() {
+        return pvp;
+    }
+
+    public int getKarma() {
+        return karma;
+    }
+
+    public int getDeath() {
+        return death;
     }
 }

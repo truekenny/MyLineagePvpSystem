@@ -3,7 +3,6 @@ package me.truekenny.MyLineagePvpSystem;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Hashtable;
 import java.util.logging.Logger;
 
 public class MyLineagePvpSystem extends JavaPlugin {
@@ -16,6 +15,8 @@ public class MyLineagePvpSystem extends JavaPlugin {
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerListener(this), this);
+
+        getCommand("pvpstatus").setExecutor(new PvpStatusCommand(this));
 
         log("MyLineagePvpSystem has been enabled!");
 
