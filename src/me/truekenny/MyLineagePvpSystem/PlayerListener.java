@@ -72,10 +72,11 @@ public class PlayerListener implements Listener {
     /**
      * Обрабатывает убийство игрока
      *
+     * @param event
      * @param player
      * @param killer
      */
-    private void murder(PlayerDeathEvent event, final Player player, Player killer) {
+    private void murder(final PlayerDeathEvent event, final Player player, Player killer) {
         if (plugin.players.getPlayerData(player).getColor().equals(ChatColor.WHITE)) {
             // Сохранить ЭКСП
             event.setKeepLevel(true);
