@@ -175,12 +175,6 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (event.isCancelled()) {
-            plugin.log("onEntityDamage: isCancelled", plugin.ANSI_BLUE);
-
-            return;
-        }
-
         Entity entity = event.getEntity();
 
         if (entity == null) {
@@ -193,6 +187,12 @@ public class PlayerListener implements Listener {
 
         if (damager == null) {
             // plugin.log("onEntityDamage: damager is null", plugin.ANSI_BLUE);
+
+            return;
+        }
+
+        if (event.isCancelled()) {
+            plugin.log("onEntityDamage: isCancelled (" + damager.getName() + " бьёт " + (((Player) entity).getName()) + ")", plugin.ANSI_BLUE);
 
             return;
         }
