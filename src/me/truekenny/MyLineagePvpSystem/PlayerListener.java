@@ -192,7 +192,7 @@ public class PlayerListener implements Listener {
         Player damager = getDamager(event);
 
         if (damager == null) {
-            plugin.log("onEntityDamage: damager is null", plugin.ANSI_BLUE);
+            // plugin.log("onEntityDamage: damager is null", plugin.ANSI_BLUE);
 
             return;
         }
