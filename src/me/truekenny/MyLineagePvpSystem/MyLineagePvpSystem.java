@@ -1,5 +1,6 @@
 package me.truekenny.MyLineagePvpSystem;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,7 +12,14 @@ public class MyLineagePvpSystem extends JavaPlugin {
     public Players players;
     private int taskId;
 
+    /**
+     * Экземпляр конфигурации
+     */
+    public FileConfiguration config;
+
     public void onEnable() {
+        defaultConfig();
+
         players = new Players(this);
 
         PluginManager pm = getServer().getPluginManager();
@@ -30,6 +38,25 @@ public class MyLineagePvpSystem extends JavaPlugin {
         getServer().getScheduler().cancelTask(taskId);
 
         log("MyLineagePvpSystem has been disabled.");
+    }
+
+    public void defaultConfig() {
+        config = getConfig();
+
+        config.addDefault("local.statusPeace", "You went into a peaceful mode"); // Вы перешли в Мирный режим
+        config.addDefault("local.statusPVP", "You went into a PVP mode"); // Вы перешли в режим PVP
+        config.addDefault("local.statusPK", "You have become a murderer, are imposed on you the effect of slowing, fatigue, weakness"); // Вы стали Убийцей, на вас наложены эффекты Замедление, Усталость, Слабость
+        config.addDefault("local.statisticPK", "PK"); // PK
+        config.addDefault("local.statisticPVP", "PVP"); // PVP
+        config.addDefault("local.statisticKarma", "Karma"); // Karma
+        config.addDefault("local.statisticDeaths", "Deaths"); // Смертей
+        config.addDefault("local.statisticDeathsMore", "(from the other players)"); // (от других игроков)
+        config.addDefault("local.statisticModePeace", "You are in a peace mode"); // Вы в Мирном режиме
+        config.addDefault("local.statisticModePVP", "You are in a PVP mode"); // Вы в режиме PVP
+        config.addDefault("local.statisticModePK", "You are player killer"); // Вы Убийца
+
+        config.options().copyDefaults(true);
+        saveConfig();
     }
 
     public static final String ANSI_RESET = "\u001B[0m";

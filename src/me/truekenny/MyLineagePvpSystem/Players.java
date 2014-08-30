@@ -13,7 +13,7 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 public class Players {
-    final public String FILENAME = "pvpplayers.data";
+    final public String FILENAME = "plugins/MyLineagePvpSystem/pvpplayers.data";
     private Hashtable<String, PlayerData> playerDataHashtable = new Hashtable<String, PlayerData>();
     private MyLineagePvpSystem plugin;
 
@@ -85,13 +85,13 @@ public class Players {
      */
     public void sendColorMessage(ChatColor chatColor, Player player) {
         if (chatColor.equals(ChatColor.WHITE)) {
-            player.sendMessage(ChatColor.GREEN + "Вы перешли в Мирный режим");
+            player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.statusPeace"));
         }
         if (chatColor.equals(ChatColor.DARK_PURPLE)) {
-            player.sendMessage(ChatColor.LIGHT_PURPLE + "Вы перешли в режим PVP");
+            player.sendMessage(ChatColor.LIGHT_PURPLE + plugin.config.getString("local.statusPVP"));
         }
         if (chatColor.equals(ChatColor.RED)) {
-            player.sendMessage(ChatColor.RED + "Вы стали Убийцей, на вас наложены эффекты Замедление, Усталость, Слабость");
+            player.sendMessage(ChatColor.RED + plugin.config.getString("local.statusPK"));
             plugin.playerListener.setKillerEffects(player);
         }
     }
@@ -104,20 +104,20 @@ public class Players {
     public void sendStatusMessage(Player player) {
         PlayerData playerData = getPlayerData(player);
 
-        player.sendMessage(ChatColor.GOLD + "PK: " + playerData.getPk());
-        player.sendMessage(ChatColor.GOLD + "PVP: " + playerData.getPvp());
-        player.sendMessage(ChatColor.GOLD + "Karma: " + playerData.getKarma());
-        player.sendMessage(ChatColor.GOLD + "Смертей: " + playerData.getDeath() + " (от других игроков)");
+        player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.statisticPK") + ": " + playerData.getPk());
+        player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.statisticPVP") + ": " + playerData.getPvp());
+        player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.statisticKarma") + ": " + playerData.getKarma());
+        player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.") + "statisticDeaths: " + playerData.getDeath() + " " + plugin.config.getString("local.statisticDeathsMore"));
 
         ChatColor chatColor = playerData.getColor();
         if (chatColor.equals(ChatColor.WHITE)) {
-            player.sendMessage(ChatColor.GREEN + "Вы в Мирном режиме");
+            player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.statisticModePeace"));
         }
         if (chatColor.equals(ChatColor.DARK_PURPLE) || chatColor.equals(ChatColor.LIGHT_PURPLE)) {
-            player.sendMessage(ChatColor.LIGHT_PURPLE + "Вы в режиме PVP");
+            player.sendMessage(ChatColor.LIGHT_PURPLE + plugin.config.getString("local.statisticModePVP"));
         }
         if (chatColor.equals(ChatColor.RED)) {
-            player.sendMessage(ChatColor.RED + "Вы Убийца");
+            player.sendMessage(ChatColor.RED + plugin.config.getString("local.statisticModePK"));
         }
     }
 
@@ -130,6 +130,7 @@ public class Players {
 
     /**
      * Загрузка данных
+     *
      * @return
      */
     private boolean load() {
@@ -175,6 +176,7 @@ public class Players {
 
     /**
      * Сохранение данных
+     *
      * @return
      */
     private boolean save() {

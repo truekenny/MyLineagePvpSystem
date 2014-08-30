@@ -67,7 +67,7 @@ public class PlayerListener implements Listener {
      */
     private void died(Player player) {
         // Уменьшить карму
-        plugin.log("died: " + player.getName() + " умер", plugin.ANSI_PURPLE);
+        plugin.log("died: " + player.getName() + "", plugin.ANSI_PURPLE);
         if (plugin.players.getPlayerData(player).died()) {
             TagAPI.refreshPlayer(player);
         }
@@ -121,7 +121,7 @@ public class PlayerListener implements Listener {
         }
 
         //
-        plugin.log("murder: " + killer.getName() + " убил " + player.getName(), plugin.ANSI_RED);
+        plugin.log("murder: " + killer.getName() + " -> " + player.getName(), plugin.ANSI_RED);
         if (plugin.players.getPlayerData(killer).murder(player)) {
             TagAPI.refreshPlayer(killer);
             setKillerEffects(killer);
@@ -161,7 +161,7 @@ public class PlayerListener implements Listener {
      * @param player
      */
     private void cleansing(Player player) {
-        plugin.log("cleansing: " + player.getName() + " чистит карму", plugin.ANSI_GREEN);
+        plugin.log("cleansing: " + player.getName() + "", plugin.ANSI_GREEN);
         if (plugin.players.getPlayerData(player).cleansing()) {
             TagAPI.refreshPlayer(player);
             removeKillerEffects(player);
@@ -251,7 +251,7 @@ public class PlayerListener implements Listener {
      * @param damager
      */
     private void hit(Player player, Player damager) {
-        plugin.log("hit: " + damager.getName() + " ударил " + player.getName(), plugin.ANSI_YELLOW);
+        plugin.log("hit: " + damager.getName() + " -> " + player.getName(), plugin.ANSI_YELLOW);
 
         if (plugin.players.getPlayerData(damager).hit(player)) {
             TagAPI.refreshPlayer(damager);
