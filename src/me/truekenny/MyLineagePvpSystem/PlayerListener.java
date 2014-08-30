@@ -9,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -68,7 +67,7 @@ public class PlayerListener implements Listener {
      */
     private void died(Player player) {
         // Уменьшить карму
-        plugin.log("died: " + player.getName() + " умер", plugin.ANSI_RED);
+        plugin.log("died: " + player.getName() + " умер", plugin.ANSI_PURPLE);
         if (plugin.players.getPlayerData(player).died()) {
             TagAPI.refreshPlayer(player);
         }
@@ -162,7 +161,7 @@ public class PlayerListener implements Listener {
      * @param player
      */
     private void cleansing(Player player) {
-        plugin.log("cleansing: " + player.getName() + " чистит карму", plugin.ANSI_RED);
+        plugin.log("cleansing: " + player.getName() + " чистит карму", plugin.ANSI_GREEN);
         if (plugin.players.getPlayerData(player).cleansing()) {
             TagAPI.refreshPlayer(player);
             removeKillerEffects(player);
@@ -172,38 +171,33 @@ public class PlayerListener implements Listener {
     /**
      * Обрабатывает урон, полученный игроком
      *
-     * @param entityDamageByEntityEvent
+     * @param event
      */
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityDamage(EntityDamageByEntityEvent entityDamageByEntityEvent) {
-        Entity entity = entityDamageByEntityEvent.getEntity();
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) {
+            plugin.log("onEntityDamage: isCancelled", plugin.ANSI_BLUE);
+
+            return;
+        }
+
+        Entity entity = event.getEntity();
 
         if (entity == null) {
+            plugin.log("onEntityDamage: entity is null", plugin.ANSI_BLUE);
 
             return;
         }
 
-        EntityDamageEvent entityDamageEvent = entity.getLastDamageCause();
-        double damage = entityDamageEvent == null ? 0 : entityDamageEvent.getDamage();
-        // plugin.log("Damage: " + String.valueOf(damage), plugin.ANSI_BLUE);
-        if (damage == 0) {
+        Player damager = getDamager(event);
+
+        if (damager == null) {
+            plugin.log("onEntityDamage: damager is null", plugin.ANSI_BLUE);
 
             return;
         }
-
-        plugin.log("onEntityDamage: type: " + entity.getType().toString());
 
         if (entity.getType().toString().equalsIgnoreCase("player")) {
-            plugin.log("onEntityDamage: entity: " + ((Player) entity).getName());
-        }
-
-        Player damager = getDamager(entityDamageByEntityEvent);
-
-        if (damager != null) {
-            plugin.log("onEntityDamage: damager: " + damager.getName());
-        }
-
-        if (entity.getType().toString().equalsIgnoreCase("player") && damager != null) {
             hit((Player) entity, damager);
         }
     }
@@ -211,19 +205,19 @@ public class PlayerListener implements Listener {
     /**
      * Получает игрока, наносивший урон
      *
-     * @param entityDamageByEntityEvent
+     * @param event
      * @return
      */
-    private Player getDamager(EntityDamageByEntityEvent entityDamageByEntityEvent) {
+    private Player getDamager(EntityDamageByEntityEvent event) {
 
-        plugin.log("getDamager: " + entityDamageByEntityEvent.getDamager().getType().toString());
-        plugin.log("getDamager: " + entityDamageByEntityEvent.getDamager().getClass().toString());
+        plugin.log("getDamager: " + event.getDamager().getType().toString());
+        plugin.log("getDamager: " + event.getDamager().getClass().toString());
 
-        if (entityDamageByEntityEvent.getDamager() instanceof Player) {
-            return (Player) entityDamageByEntityEvent.getDamager();
+        if (event.getDamager() instanceof Player) {
+            return (Player) event.getDamager();
         }
-        if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
-            Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
+        if (event.getDamager() instanceof Projectile) {
+            Projectile projectile = (Projectile) event.getDamager();
             if (projectile.getShooter() instanceof Player) {
                 return (Player) projectile.getShooter();
             }
@@ -239,7 +233,7 @@ public class PlayerListener implements Listener {
      * @param damager
      */
     private void hit(Player player, Player damager) {
-        plugin.log("hit: " + damager.getName() + " ударил " + player.getName(), plugin.ANSI_RED);
+        plugin.log("hit: " + damager.getName() + " ударил " + player.getName(), plugin.ANSI_YELLOW);
 
         if (plugin.players.getPlayerData(damager).hit(player)) {
             TagAPI.refreshPlayer(damager);
@@ -290,6 +284,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Удалить эффекты с убийцы
+     *
      * @param player
      */
     private void removeKillerEffects(Player player) {
@@ -300,13 +295,14 @@ public class PlayerListener implements Listener {
 
     /**
      * Обрабатывает воскрешение игрока
+     *
      * @param event
      */
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         final Player player = event.getPlayer();
 
-        plugin.log("onPlayerRespawn: " + player.getName(), plugin.ANSI_RED);
+        plugin.log("onPlayerRespawn: " + player.getName(), plugin.ANSI_BLUE);
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
