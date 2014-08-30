@@ -9,10 +9,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 import org.kitteh.tag.TagAPI;
 
@@ -24,7 +29,7 @@ public class PlayerListener implements Listener {
     private static final Set<String> types = new HashSet<String>(Arrays.asList(
             new String[]{"SHEEP", "COW", "ZOMBIE", "SKELETON"}
     ));
-
+    final private int potionDuration = 20 * 30 * 24 * 60 * 60;
     /**
      * Экземпляр главного класса плагина
      */
@@ -67,6 +72,7 @@ public class PlayerListener implements Listener {
         if (plugin.players.getPlayerData(player).died()) {
             TagAPI.refreshPlayer(player);
         }
+        setKillerEffects(player);
     }
 
     /**
@@ -119,6 +125,7 @@ public class PlayerListener implements Listener {
         plugin.log("murder: " + killer.getName() + " убил " + player.getName(), plugin.ANSI_RED);
         if (plugin.players.getPlayerData(killer).murder(player)) {
             TagAPI.refreshPlayer(killer);
+            setKillerEffects(killer);
         }
     }
 
@@ -158,6 +165,7 @@ public class PlayerListener implements Listener {
         plugin.log("cleansing: " + player.getName() + " чистит карму", plugin.ANSI_RED);
         if (plugin.players.getPlayerData(player).cleansing()) {
             TagAPI.refreshPlayer(player);
+            removeKillerEffects(player);
         }
     }
 
@@ -166,12 +174,26 @@ public class PlayerListener implements Listener {
      *
      * @param entityDamageByEntityEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageByEntityEvent entityDamageByEntityEvent) {
         Entity entity = entityDamageByEntityEvent.getEntity();
-        plugin.log("onEntityDamage: type: " + (entity == null ? "null" : entity.getType().toString()));
 
-        if (entity != null && entity.getType().toString().equalsIgnoreCase("player")) {
+        if (entity == null) {
+
+            return;
+        }
+
+        EntityDamageEvent entityDamageEvent = entity.getLastDamageCause();
+        double damage = entityDamageEvent == null ? 0 : entityDamageEvent.getDamage();
+        // plugin.log("Damage: " + String.valueOf(damage), plugin.ANSI_BLUE);
+        if (damage == 0) {
+
+            return;
+        }
+
+        plugin.log("onEntityDamage: type: " + entity.getType().toString());
+
+        if (entity.getType().toString().equalsIgnoreCase("player")) {
             plugin.log("onEntityDamage: entity: " + ((Player) entity).getName());
         }
 
@@ -181,7 +203,7 @@ public class PlayerListener implements Listener {
             plugin.log("onEntityDamage: damager: " + damager.getName());
         }
 
-        if (entity != null && entity.getType().toString().equalsIgnoreCase("player") && damager != null) {
+        if (entity.getType().toString().equalsIgnoreCase("player") && damager != null) {
             hit((Player) entity, damager);
         }
     }
@@ -250,6 +272,60 @@ public class PlayerListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         //plugin.log("onPlayerMove: ");
         //plugin.players.updateNicks();
+    }
+
+    /**
+     * Устанавливает на убийцу эффекты
+     *
+     * @param player
+     */
+    public void setKillerEffects(Player player) {
+        if (plugin.players.getPlayerData(player).getColor().equals(ChatColor.RED)) {
+            plugin.log("setKillerEffects: " + player.getName(), plugin.ANSI_RED);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, potionDuration, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, potionDuration, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, potionDuration, 1));
+        }
+    }
+
+    /**
+     * Удалить эффекты с убийцы
+     * @param player
+     */
+    private void removeKillerEffects(Player player) {
+        player.removePotionEffect(PotionEffectType.SLOW);
+        player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+        player.removePotionEffect(PotionEffectType.WEAKNESS);
+    }
+
+    /**
+     * Обрабатывает воскрешение игрока
+     * @param event
+     */
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        final Player player = event.getPlayer();
+
+        plugin.log("onPlayerRespawn: " + player.getName(), plugin.ANSI_RED);
+
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+
+            @Override
+            public void run() {
+                setKillerEffects(player);
+            }
+
+        });
+    }
+
+    /**
+     * Обрабытывает вход пользователя
+     *
+     * @param event Событие
+     */
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        setKillerEffects(event.getPlayer());
     }
 }
 

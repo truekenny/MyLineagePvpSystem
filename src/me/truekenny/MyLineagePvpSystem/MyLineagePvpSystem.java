@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 public class MyLineagePvpSystem extends JavaPlugin {
     private Logger log = Logger.getLogger("Minecraft");
+    public PlayerListener playerListener;
     public Players players;
     private int taskId;
 
@@ -14,7 +15,8 @@ public class MyLineagePvpSystem extends JavaPlugin {
         players = new Players(this);
 
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new PlayerListener(this), this);
+        playerListener = new PlayerListener(this);
+        pm.registerEvents(playerListener, this);
 
         getCommand("pvpstatus").setExecutor(new PvpStatusCommand(this));
 
@@ -45,7 +47,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
     }
 
     public void log(String text) {
-        this.log.info(ANSI_GREEN + text + ANSI_RESET);
+        // log(text, ANSI_GREEN);
     }
 
 }

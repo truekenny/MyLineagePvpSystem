@@ -91,7 +91,8 @@ public class Players {
             player.sendMessage(ChatColor.LIGHT_PURPLE + "Вы перешли в режим PVP");
         }
         if (chatColor.equals(ChatColor.RED)) {
-            player.sendMessage(ChatColor.RED + "Вы стали Убийцей");
+            player.sendMessage(ChatColor.RED + "Вы стали Убийцей, на вас наложены эффекты Замедление, Усталость, Слабость");
+            plugin.playerListener.setKillerEffects(player);
         }
     }
 
