@@ -1,6 +1,10 @@
 MyLineagePvpSystem
 ==================
 
+Требования для плагина
+----
+- TagAPI http://dev.bukkit.org/bukkit-plugins/tag/files/34-v3-0-6/
+
 Группы игроков
 ----
 - Мирные игроки;
