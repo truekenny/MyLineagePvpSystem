@@ -183,6 +183,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (!entity.getType().toString().equalsIgnoreCase("player")) {
+            // plugin.log("onEntityDamage: ERROR: Wrong type " + entity.getType().toString(), plugin.ANSI_RED);
+
+            return;
+        }
+
         Player damager = getDamager(event);
 
         if (damager == null) {
@@ -192,7 +198,19 @@ public class PlayerListener implements Listener {
         }
 
         if (event.isCancelled()) {
-            plugin.log("onEntityDamage: isCancelled (" + damager.getName() + " бьёт " + (((Player) entity).getName()) + ")", plugin.ANSI_BLUE);
+
+            String enName;
+
+            try {
+                enName = ((Player) entity).getName();
+            } catch (Exception e) {
+                plugin.log("ERROR: " + entity.getType().toString(), plugin.ANSI_RED);
+
+                return;
+            }
+
+            String dmName = damager.getName();
+            plugin.log("onEntityDamage: isCancelled (" + dmName + " -> " + enName + ")", plugin.ANSI_BLUE);
 
             return;
         }
