@@ -107,7 +107,7 @@ public class Players {
         player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.statisticPK") + ": " + playerData.getPk());
         player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.statisticPVP") + ": " + playerData.getPvp());
         player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.statisticKarma") + ": " + playerData.getKarma());
-        player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.") + "statisticDeaths: " + playerData.getDeath() + " " + plugin.config.getString("local.statisticDeathsMore"));
+        player.sendMessage(ChatColor.GOLD + plugin.config.getString("local.statisticDeaths") + ": " + playerData.getDeath() + " " + plugin.config.getString("local.statisticDeathsMore"));
 
         ChatColor chatColor = playerData.getColor();
         if (chatColor.equals(ChatColor.WHITE)) {
