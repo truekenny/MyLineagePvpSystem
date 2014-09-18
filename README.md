@@ -12,6 +12,47 @@ MyLineagePvpSystem
 - Игроки, которые убивают всех без разбора.
 
 
+Конфиг
+----
+```
+local:
+  statusPeace: You went into a peaceful mode
+  statusPVP: You went into a PVP mode
+  statusPK: You have become a murderer, are imposed on you the effect of slowing, fatigue, weakness
+  statisticPK: PK
+  statisticPVP: PVP
+  statisticKarma: Karma
+  statisticDeaths: Deaths
+  statisticDeathsMore: (from the other players)
+  statisticModePeace: You are in a peace mode
+  statisticModePVP: You are in a PVP mode
+  statisticModePK: You are player killer
+drop:
+  inventory:
+    peace: 0
+    pvp: 10
+    pk: 100
+  armor:
+    peace: 0
+    pvp: 9
+    pk: 99
+experience:
+  keep:
+    peace: true
+    pvp: false
+    pk: false
+karma:
+  kill:
+    peace: -10
+    self: 10
+    mob: 1
+world:
+  doesNotWork: creative,world_creative,world
+  doNotCleanKarma: creative,world_creative
+time:
+  purple: 30
+```
+
 Внешние отличия
 ----
 - Мирные игроки – с белым ником над головой;
