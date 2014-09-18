@@ -82,43 +82,82 @@ public class PlayerListener implements Listener {
      * @param killer
      */
     private void murder(final PlayerDeathEvent event, final Player player, Player killer) {
+        int dropInventory = 0;
+        int dropArmor = 0;
+        boolean keepLevel = true;
+
         if (plugin.players.getPlayerData(player).getColor().equals(ChatColor.WHITE)) {
+            // Peace
+            dropInventory = plugin.config.getInt("drop.inventory.peace");
+            dropArmor = plugin.config.getInt("drop.armor.peace");
+            keepLevel = plugin.config.getBoolean("experience.keep.peace");
+        } else if (plugin.players.getPlayerData(player).getColor().equals(ChatColor.RED)) {
+            // PK
+            dropInventory = plugin.config.getInt("drop.inventory.pk");
+            dropArmor = plugin.config.getInt("drop.armor.pk");
+            keepLevel = plugin.config.getBoolean("experience.keep.pk");
+        } else {
+            // PVP
+            dropInventory = plugin.config.getInt("drop.inventory.pvp");
+            dropArmor = plugin.config.getInt("drop.armor.pvp");
+            keepLevel = plugin.config.getBoolean("experience.keep.pvp");
+        }
+
+        plugin.log("");
+
+        // Begin drops
+
+        if(keepLevel) {
             // Сохранить ЭКСП
             event.setKeepLevel(true);
             event.setDroppedExp(0);
-
-            // Сохранить броню
-            final ItemStack[] armor = player.getInventory().getArmorContents();
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    player.getInventory().setArmorContents(armor);
-                }
-
-            });
-            for (ItemStack is : armor) {
-                event.getDrops().remove(is);
-            }
-
-            // Сохранить броню
-            final ItemStack[] inventory = player.getInventory().getContents();
-            for (int i = 0; i < inventory.length; i++) {
-                ItemStack is = inventory[i];
-
-                if (is != null && Math.random() < 0.95)
-                    event.getDrops().remove(is);
-                else
-                    inventory[i] = null;
-            }
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-
-                @Override
-                public void run() {
-                    player.getInventory().setContents(inventory);
-                }
-
-            });
         }
+
+        // Сохранить броню
+        final ItemStack[] armor = player.getInventory().getArmorContents();
+
+        for (int i = 0; i < armor.length; i++) {
+            ItemStack is = armor[i];
+
+            if (is != null && Math.random()*100 < 100 - dropArmor)
+                event.getDrops().remove(is); // Сохраняется
+            else
+                armor[i] = null; // Падает
+        }
+
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                player.getInventory().setArmorContents(armor);
+            }
+
+        });
+/*
+        for (ItemStack is : armor) {
+            event.getDrops().remove(is);
+        }
+*/
+
+        // Сохранить броню
+        final ItemStack[] inventory = player.getInventory().getContents();
+        for (int i = 0; i < inventory.length; i++) {
+            ItemStack is = inventory[i];
+
+            if (is != null && Math.random()*100 < 100 - dropInventory)
+                event.getDrops().remove(is); // Сохраняется
+            else
+                inventory[i] = null; // Падает
+        }
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+
+            @Override
+            public void run() {
+                player.getInventory().setContents(inventory);
+            }
+
+        });
+
+        // End drops
 
         //
         plugin.log("murder: " + killer.getName() + " -> " + player.getName(), plugin.ANSI_RED);

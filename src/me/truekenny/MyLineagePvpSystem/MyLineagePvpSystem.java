@@ -55,6 +55,27 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("local.statisticModePVP", "You are in a PVP mode"); // Вы в режиме PVP
         config.addDefault("local.statisticModePK", "You are player killer"); // Вы Убийца
 
+        config.addDefault("drop.inventory.peace", 0);
+        config.addDefault("drop.inventory.pvp", 10);
+        config.addDefault("drop.inventory.pk", 100);
+
+        config.addDefault("drop.armor.peace", 0);
+        config.addDefault("drop.armor.pvp", 9);
+        config.addDefault("drop.armor.pk", 99);
+
+        config.addDefault("experience.keep.peace", true);
+        config.addDefault("experience.keep.pvp", false);
+        config.addDefault("experience.keep.pk", false);
+
+        config.addDefault("karma.killPeacePlayer", -10);
+        config.addDefault("karma.ownDeath", 10);
+        config.addDefault("karma.killMob", 1);
+
+        config.addDefault("world.doesNotWork", "creative,world_creative");
+        config.addDefault("world.doNotCleanKarma", "creative,world_creative");
+
+        config.addDefault("time.purple", 30);
+
         config.options().copyDefaults(true);
         saveConfig();
     }
