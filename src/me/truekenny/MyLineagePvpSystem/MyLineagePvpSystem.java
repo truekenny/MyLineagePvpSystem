@@ -67,9 +67,9 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("experience.keep.pvp", false);
         config.addDefault("experience.keep.pk", false);
 
-        config.addDefault("karma.killPeacePlayer", -10);
-        config.addDefault("karma.ownDeath", 10);
-        config.addDefault("karma.killMob", 1);
+        config.addDefault("karma.kill.peace", -10);
+        config.addDefault("karma.kill.self", 10);
+        config.addDefault("karma.kill.mob", 1);
 
         config.addDefault("world.doesNotWork", "creative,world_creative");
         config.addDefault("world.doNotCleanKarma", "creative,world_creative");

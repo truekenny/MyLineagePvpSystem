@@ -23,9 +23,11 @@ public class PlayerData {
      * @return
      */
     public boolean murder(Player player) {
+        int delta = players.plugin.config.getInt("karma.kill.peace");
+
         int _karma = karma;
         if (players.getPlayerData(player).getColor().equals(ChatColor.WHITE)) {
-            karma -= 10;
+            karma += delta;
             pk++;
 
             if (_karma == 0 && karma < 0) return true;
@@ -41,8 +43,10 @@ public class PlayerData {
      * @return
      */
     public boolean died() {
+        int delta = players.plugin.config.getInt("karma.kill.self");
+
         int _karma = karma;
-        karma += 10;
+        karma += delta;
         if (karma > 0) karma = 0;
 
         death++;
@@ -57,9 +61,10 @@ public class PlayerData {
      * @return
      */
     public boolean cleansing() {
+        int delta = players.plugin.config.getInt("karma.kill.mob");
         int _karma = karma;
 
-        karma += 1;
+        karma += delta;
         if (karma > 0) karma = 0;
 
         if (_karma < 0 && karma == 0) return true;
@@ -93,18 +98,20 @@ public class PlayerData {
      * @return
      */
     public ChatColor getColor() {
+        int deltaTime = players.plugin.config.getInt("time.purple");
+
         if (karma < 0) {
 
             return ChatColor.RED;
         }
 
-        if (System.currentTimeMillis() / 1000L < unixTime + 25) {
+        if (System.currentTimeMillis() / 1000L < unixTime + deltaTime - 5) {
 
             return ChatColor.DARK_PURPLE;
         }
 
 
-        if (System.currentTimeMillis() / 1000L < unixTime + 30) {
+        if (System.currentTimeMillis() / 1000L < unixTime + deltaTime) {
 
             return ChatColor.LIGHT_PURPLE;
         }

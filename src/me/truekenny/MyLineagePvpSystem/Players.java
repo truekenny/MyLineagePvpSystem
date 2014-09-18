@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
 public class Players {
     final public String FILENAME = "plugins/MyLineagePvpSystem/pvpplayers.data";
     private Hashtable<String, PlayerData> playerDataHashtable = new Hashtable<String, PlayerData>();
-    private MyLineagePvpSystem plugin;
+    public MyLineagePvpSystem plugin;
 
     /**
      * Конструктор
@@ -143,7 +143,7 @@ public class Players {
             br = new BufferedReader(new FileReader(FILENAME));
 
             while ((sCurrentLine = br.readLine()) != null) {
-                plugin.log(sCurrentLine, plugin.ANSI_BLUE);
+                // plugin.log(sCurrentLine, plugin.ANSI_BLUE);
 
                 StringTokenizer st = new StringTokenizer(sCurrentLine);
                 String nick = st.nextToken();
