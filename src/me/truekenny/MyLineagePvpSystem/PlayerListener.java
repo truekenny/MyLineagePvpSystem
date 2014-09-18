@@ -47,6 +47,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeath(final PlayerDeathEvent event) {
         final Player player = event.getEntity();
+        if(plugin.checkWorld(plugin.NOTWORK, player)) return;
+
         Player killer = player.getKiller();
 
         plugin.log("onPlayerDeath: entity: " + player.getName());
@@ -174,8 +176,6 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDeath(EntityDeathEvent event) {
-
-
         LivingEntity livingEntity = event.getEntity();
         plugin.log("onEntityDeath: entity: " + livingEntity.getType().toString());
 
@@ -188,6 +188,9 @@ public class PlayerListener implements Listener {
         Player killer = livingEntity.getKiller();
 
         if (killer != null && killer.getType().toString().equalsIgnoreCase("player")) {
+            if(plugin.checkWorld(plugin.NOTWORK, killer)) return;
+            if(plugin.checkWorld(plugin.NOTCLEANKARMA, killer)) return;
+
             plugin.log("onEntityDeath: killer: " + ((Player) killer).getName());
 
             cleansing(killer);
@@ -227,6 +230,8 @@ public class PlayerListener implements Listener {
 
             return;
         }
+
+        if(plugin.checkWorld(plugin.NOTWORK, (Player)entity)) return;
 
         Player damager = getDamager(event);
 
@@ -305,6 +310,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onNameTag(AsyncPlayerReceiveNameTagEvent event) {
         Player player = event.getNamedPlayer();
+
+        if(plugin.checkWorld(plugin.NOTWORK, player)) return;
+
         event.setTag(getPlayerColor(player) + player.getName());
         // plugin.log("onNameTag: " + player.getName());
     }
@@ -331,6 +339,12 @@ public class PlayerListener implements Listener {
      * @param player
      */
     public void setKillerEffects(Player player) {
+        if(plugin.checkWorld(plugin.NOTWORK, player)) {
+            removeKillerEffects(player);
+
+            return;
+        }
+
         if (plugin.players.getPlayerData(player).getColor().equals(ChatColor.RED)) {
             plugin.log("setKillerEffects: " + player.getName(), plugin.ANSI_RED);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, potionDuration, 1));
@@ -360,6 +374,8 @@ public class PlayerListener implements Listener {
         final Player player = event.getPlayer();
 
         plugin.log("onPlayerRespawn: " + player.getName(), plugin.ANSI_BLUE);
+
+        if(plugin.checkWorld(plugin.NOTWORK, player)) return;
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 

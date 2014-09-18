@@ -1,6 +1,7 @@
 package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -98,4 +99,31 @@ public class MyLineagePvpSystem extends JavaPlugin {
         // log(text, ANSI_GREEN);
     }
 
+    public static final int NOTWORK = 0;
+    public static final int NOTCLEANKARMA = 1;
+
+    /**
+     * Возвращает, что мир должен быть отключен
+     * @param worldType
+     * @param worldName
+     * @return
+     */
+    public boolean checkWorld(int worldType, String worldName) {
+        String worlds = "";
+        switch (worldType) {
+            case NOTWORK:
+                worlds = config.getString("world.doesNotWork");
+                break;
+            case NOTCLEANKARMA:
+                worlds = config.getString("world.doNotCleanKarma");
+                break;
+        }
+        worlds = "," + worlds.toLowerCase() + ",";
+
+        return worlds.contains("," + worldName.toLowerCase() + ",");
+    }
+
+    public boolean checkWorld(int worldType, Player player) {
+        return checkWorld(worldType, player.getWorld().getName());
+    }
 }
