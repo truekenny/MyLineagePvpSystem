@@ -14,8 +14,8 @@ import java.util.StringTokenizer;
 
 public class Players {
     final public String FILENAME = "plugins/MyLineagePvpSystem/pvpplayers.data";
-    private Hashtable<String, PlayerData> playerDataHashtable = new Hashtable<String, PlayerData>();
     public MyLineagePvpSystem plugin;
+    private Hashtable<String, PlayerData> playerDataHashtable = new Hashtable<String, PlayerData>();
 
     /**
      * Конструктор
@@ -191,6 +191,10 @@ public class Players {
         while (e.hasMoreElements()) {
             String nick = e.nextElement();
             PlayerData playerData = playerDataHashtable.get(nick);
+
+            if (playerData.getPk() == 0 & playerData.getPvp() == 0 & playerData.getKarma() == 0 & playerData.getDeath() == 0) {
+                continue;
+            }
 
             out.printf("%s %d %d %d %d\n", nick, playerData.getPk(), playerData.getPvp(), playerData.getKarma(), playerData.getDeath());
         }

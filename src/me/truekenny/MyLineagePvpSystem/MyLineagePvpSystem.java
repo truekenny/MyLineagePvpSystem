@@ -27,6 +27,13 @@ public class MyLineagePvpSystem extends JavaPlugin {
         playerListener = new PlayerListener(this);
         pm.registerEvents(playerListener, this);
 
+        if(config.getBoolean("rpg.enable")) {
+            Mobs.load();
+            pm.registerEvents(new RpgListener(this), this);
+        } else {
+            log("MyLineagePvpSystem: Rpg game disabled by config (rpg.enable)", ANSI_RED);
+        }
+
         getCommand("pvpstatus").setExecutor(new PvpStatusCommand(this));
 
         log("MyLineagePvpSystem has been enabled!");
@@ -37,6 +44,9 @@ public class MyLineagePvpSystem extends JavaPlugin {
     public void onDisable() {
         players.destroy();
         getServer().getScheduler().cancelTask(taskId);
+        if(config.getBoolean("rpg.enable")) {
+            Mobs.save();
+        }
 
         log("MyLineagePvpSystem has been disabled.");
     }
@@ -76,6 +86,8 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("world.doNotCleanKarma", "creative,world_creative");
 
         config.addDefault("time.purple", 30);
+
+        config.addDefault("rpg.enable", false);
 
         config.options().copyDefaults(true);
         saveConfig();
