@@ -72,11 +72,11 @@ public class RpgListener implements Listener {
         LivingEntity livingEntity = event.getEntity();
         LivingEntity killer = livingEntity.getKiller();
 
-        Mobs.remove(livingEntity.getEntityId());
         plugin.log("onEntityDeath: remove: " + livingEntity.getEntityId(), MyLineagePvpSystem.ANSI_RED);
 
         if (killer == null) {
 
+            Mobs.remove(livingEntity.getEntityId());
             return;
         }
 
@@ -89,6 +89,8 @@ public class RpgListener implements Listener {
             event.setDroppedExp(0);
             plugin.log("onEntityDeath: noExp", MyLineagePvpSystem.ANSI_RED);
         }
+
+        Mobs.remove(livingEntity.getEntityId());
     }
 
     /**

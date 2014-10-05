@@ -25,11 +25,11 @@ public class MobData {
         ) / 100) + 1; // 100 блоков = 1 уровень
 
         if (entity.getWorld().getName().equalsIgnoreCase("world_nether")) {
-            level += 20;
+            level += 25;
         }
 
         if (entity.getWorld().getName().equalsIgnoreCase("world_the_end")) {
-            level += 40;
+            level += 50;
         }
 
         entity.setCustomName("Level " + level);
@@ -42,5 +42,17 @@ public class MobData {
      */
     public MobData(String level) {
         this.level = Long.parseLong(level);
+    }
+
+    /**
+     * Устанвливает новый уровень
+     *
+     * @param entity
+     * @param level
+     */
+    public void setLevel(LivingEntity entity, long level) {
+        this.level = level;
+
+        entity.setCustomName("Level " + this.level);
     }
 }

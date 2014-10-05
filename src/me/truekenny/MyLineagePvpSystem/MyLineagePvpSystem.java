@@ -35,6 +35,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         }
 
         getCommand("pvpstatus").setExecutor(new PvpStatusCommand(this));
+        getCommand("pvpspawn").setExecutor(new PvpSpawnCommand(this));
 
         log("MyLineagePvpSystem has been enabled!");
 

@@ -57,7 +57,7 @@ public class Mobs {
             br = new BufferedReader(new FileReader(FILENAME));
 
             while ((sCurrentLine = br.readLine()) != null) {
-                System.out.println(sCurrentLine);
+                // System.out.println(sCurrentLine);
 
                 StringTokenizer st = new StringTokenizer(sCurrentLine);
                 String id = st.nextToken();
