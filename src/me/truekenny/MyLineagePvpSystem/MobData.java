@@ -1,17 +1,21 @@
 package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 public class MobData {
     public long level = 1;
+
+    private MyLineagePvpSystem plugin;
 
     /**
      * Вычисляет уровень существа, устанавливет имя
      *
      * @param entity
      */
-    public MobData(LivingEntity entity) {
+    public MobData(LivingEntity entity, MyLineagePvpSystem plugin) {
+        this.plugin = plugin;
         Location spawn = entity.getWorld().getSpawnLocation();
         Location mob = entity.getLocation();
 
@@ -32,7 +36,7 @@ public class MobData {
             level += 50;
         }
 
-        entity.setCustomName("Level " + level);
+        entity.setCustomName(getName(entity.getType()) + " " + level);
         entity.setCustomNameVisible(true);
     }
 
@@ -41,7 +45,8 @@ public class MobData {
      *
      * @param level
      */
-    public MobData(String level) {
+    public MobData(String level, MyLineagePvpSystem plugin) {
+        this.plugin = plugin;
         this.level = Long.parseLong(level);
     }
 
@@ -55,5 +60,16 @@ public class MobData {
         this.level = level;
 
         entity.setCustomName("Level " + this.level);
+    }
+
+    private String getName(EntityType entityType) {
+
+        String name = plugin.config.getString("rpg.name." + entityType.toString());
+        if (name != null) {
+
+            return name;
+        }
+
+        return plugin.config.getString("rpg.name.default");
     }
 }

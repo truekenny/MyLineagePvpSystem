@@ -20,13 +20,13 @@ public class Mobs {
      * @param entity
      * @return
      */
-    public static MobData getMobData(LivingEntity entity) {
+    public static MobData getMobData(LivingEntity entity, MyLineagePvpSystem plugin) {
 
         Integer id = entity.getEntityId();
 
         MobData mobData = mobDataHashtable.get(id);
         if (mobData == null) {
-            mobData = new MobData(entity);
+            mobData = new MobData(entity, plugin);
             mobDataHashtable.put(id, mobData);
         }
 
@@ -47,7 +47,7 @@ public class Mobs {
      *
      * @return
      */
-    public static boolean load() {
+    public static boolean load(MyLineagePvpSystem plugin) {
         BufferedReader br = null;
 
         try {
@@ -63,7 +63,7 @@ public class Mobs {
                 String id = st.nextToken();
                 String level = st.nextToken();
 
-                MobData mobData = new MobData(level);
+                MobData mobData = new MobData(level, plugin);
                 mobDataHashtable.put(Integer.parseInt(id), mobData);
 
             }

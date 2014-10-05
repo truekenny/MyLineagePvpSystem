@@ -74,7 +74,7 @@ public class PvpSpawnCommand implements CommandExecutor {
             }
 
             if (level != 0) {
-                Mobs.getMobData(entity).setLevel(entity, level);
+                Mobs.getMobData(entity, plugin).setLevel(entity, level);
             }
         }
 

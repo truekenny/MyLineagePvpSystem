@@ -28,7 +28,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         pm.registerEvents(playerListener, this);
 
         if(config.getBoolean("rpg.enable")) {
-            Mobs.load();
+            Mobs.load(this);
             pm.registerEvents(new RpgListener(this), this);
         } else {
             log("MyLineagePvpSystem: Rpg game disabled by config (rpg.enable)", ANSI_RED);
@@ -89,6 +89,38 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("time.purple", 30);
 
         config.addDefault("rpg.enable", false);
+
+        config.addDefault("rpg.name.CREEPER", "Creeper");
+        config.addDefault("rpg.name.SKELETON", "Skeleton");
+        config.addDefault("rpg.name.SPIDER", "Spider");
+        config.addDefault("rpg.name.GIANT", "Giaht");
+        config.addDefault("rpg.name.ZOMBIE", "Zombie");
+        config.addDefault("rpg.name.SLIME", "Slime");
+        config.addDefault("rpg.name.GHAST", "Ghast");
+        config.addDefault("rpg.name.PIG_ZOMBIE", "Pig Zombie");
+        config.addDefault("rpg.name.ENDERMAN", "Enderman");
+        config.addDefault("rpg.name.CAVE_SPIDER", "Cave Spider");
+        config.addDefault("rpg.name.SILVERFISH", "Silver Fish");
+        config.addDefault("rpg.name.BLAZE", "Blaze");
+        config.addDefault("rpg.name.MAGMA_CUBE", "Magma Cube");
+        config.addDefault("rpg.name.ENDER_DRAGON", "ENDER DRAGON");
+        config.addDefault("rpg.name.WITHER", "Wither");
+        config.addDefault("rpg.name.BAT", "Bat");
+        config.addDefault("rpg.name.WITCH", "Witch");
+        config.addDefault("rpg.name.PIG", "Pig");
+        config.addDefault("rpg.name.SHEEP", "Sheep");
+        config.addDefault("rpg.name.COW", "Cow");
+        config.addDefault("rpg.name.CHICKEN", "Chicken");
+        config.addDefault("rpg.name.SQUID", "Squid");
+        config.addDefault("rpg.name.WOLF", "Wolf");
+        config.addDefault("rpg.name.MUSHROOM_COW", "Mushroom Cow");
+        config.addDefault("rpg.name.SNOWMAN", "Snowman");
+        config.addDefault("rpg.name.OCELOT", "Ocelot");
+        config.addDefault("rpg.name.IRON_GOLEM", "Golem");
+        config.addDefault("rpg.name.HORSE", "Horse");
+        config.addDefault("rpg.name.VILLAGER", "Villager");
+        config.addDefault("rpg.name.default", "Level");
+
 
         config.options().copyDefaults(true);
         saveConfig();
