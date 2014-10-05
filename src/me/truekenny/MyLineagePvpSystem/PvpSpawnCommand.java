@@ -43,9 +43,14 @@ public class PvpSpawnCommand implements CommandExecutor {
 
         String mobName = split[0];
         int level = 0;
+        int count = 1;
 
         if (split.length >= 2) {
             level = Integer.parseInt(split[1]);
+        }
+
+        if (split.length >= 3) {
+            count = Integer.parseInt(split[2]);
         }
 
         if (level < 0) {
@@ -56,18 +61,21 @@ public class PvpSpawnCommand implements CommandExecutor {
 
         EntityType entityType;
         LivingEntity entity;
-        try {
-            entityType = EntityType.valueOf(mobName.toUpperCase());
-            World world = player.getWorld();
-            entity = (LivingEntity) (world.spawnEntity(player.getLocation(), entityType));
-        } catch (Exception e) {
-            player.sendMessage("Only: CREEPER, SKELETON, SPIDER, GIANT, ZOMBIE, SLIME, GHAST, PIG_ZOMBIE, ENDERMAN, CAVE_SPIDER, SILVERFISH, BLAZE, MAGMA_CUBE, ENDER_DRAGON, WITHER, BAT, WITCH, PIG, SHEEP, COW, CHICKEN, SQUID, WOLF, MUSHROOM_COW, SNOWMAN, OCELOT, IRON_GOLEM, HORSE, VILLAGER");
+        World world = player.getWorld();
 
-            return false;
-        }
+        for (int i = 1; i <= count; i++) {
+            try {
+                entityType = EntityType.valueOf(mobName.toUpperCase());
+                entity = (LivingEntity) (world.spawnEntity(player.getLocation(), entityType));
+            } catch (Exception e) {
+                player.sendMessage("Only: CREEPER, SKELETON, SPIDER, GIANT, ZOMBIE, SLIME, GHAST, PIG_ZOMBIE, ENDERMAN, CAVE_SPIDER, SILVERFISH, BLAZE, MAGMA_CUBE, ENDER_DRAGON, WITHER, BAT, WITCH, PIG, SHEEP, COW, CHICKEN, SQUID, WOLF, MUSHROOM_COW, SNOWMAN, OCELOT, IRON_GOLEM, HORSE, VILLAGER");
 
-        if (level != 0) {
-            Mobs.getMobData(entity).setLevel(entity, level);
+                return false;
+            }
+
+            if (level != 0) {
+                Mobs.getMobData(entity).setLevel(entity, level);
+            }
         }
 
         return true;

@@ -101,4 +101,4 @@ rpg:
 Команды
 ----
 - /pvpstatus – информция о Вашем статусе;
-- /pvpspawn mobName level – Спаунит моба.
+- /pvpspawn mobName [level [count]] – Спаунит моба.
