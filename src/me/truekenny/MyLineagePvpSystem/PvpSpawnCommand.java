@@ -57,7 +57,7 @@ public class PvpSpawnCommand implements CommandExecutor {
         EntityType entityType;
         LivingEntity entity;
         try {
-            entityType = EntityType.fromName(mobName);
+            entityType = EntityType.valueOf(mobName.toUpperCase());
             World world = player.getWorld();
             entity = (LivingEntity) (world.spawnEntity(player.getLocation(), entityType));
         } catch (Exception e) {

@@ -26,7 +26,7 @@ public class RpgListener implements Listener {
      */
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        plugin.log(".onCreatureSpawn: " + event.getEntity().getType().toString(), MyLineagePvpSystem.ANSI_GREEN);
+        // plugin.log("onCreatureSpawn: " + event.getEntity().getType().toString(), MyLineagePvpSystem.ANSI_GREEN);
 
         Mobs.getMobData(event.getEntity());
     }

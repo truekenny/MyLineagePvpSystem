@@ -33,6 +33,7 @@ public class MobData {
         }
 
         entity.setCustomName("Level " + level);
+        entity.setCustomNameVisible(true);
     }
 
     /**
