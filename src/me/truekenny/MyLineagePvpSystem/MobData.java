@@ -54,7 +54,7 @@ public class MobData {
     public void setLevel(LivingEntity entity, long level) {
         this.level = level;
 
-        entity.setCustomName("Level " + this.level);
+        entity.setCustomName(getName(entity.getType()) + " " + this.level);
     }
 
     private String getName(EntityType entityType) {
