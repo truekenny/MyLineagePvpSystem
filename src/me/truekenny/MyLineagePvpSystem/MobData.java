@@ -21,12 +21,7 @@ public class MobData {
 
         // System.out.println("Loc: " + entity.getWorld().getName());
 
-        level = Math.round(Math.sqrt(
-                Math.pow(spawn.getBlockX() - mob.getBlockX(), 2) +
-                        Math.pow(spawn.getBlockY() - mob.getBlockY(), 2) +
-                        Math.pow(spawn.getBlockZ() - mob.getBlockZ(), 2)
-
-        ) / 100) + 1; // 100 блоков = 1 уровень
+        level = Math.round(Helper.betweenPoints(spawn, mob) / 100) + 1; // 100 блоков = 1 уровень
 
         if (entity.getWorld().getName().equalsIgnoreCase("world_nether")) {
             level += 25;

@@ -1,5 +1,7 @@
 package me.truekenny.MyLineagePvpSystem;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -9,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class RpgListener implements Listener {
@@ -32,12 +35,37 @@ public class RpgListener implements Listener {
     }
 
     /**
+     * Определяет скорость горения мобов
+     *
+     * @param event
+     */
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        // plugin.log(event.getCause().toString(), plugin.ANSI_RED);
+
+        if (event.getCause().toString().equalsIgnoreCase("FIRE_TICK")) {
+            LivingEntity entity = getEntity(event.getEntity());
+            if (!entity.getType().toString().equalsIgnoreCase("PLAYER")) {
+                if (distanceToPlayer(entity) < 15) {
+                    event.setDamage(event.getDamage() / Mobs.getMobData(entity, plugin).level);
+                } else {
+                }
+            }
+
+        }
+
+    }
+
+    /**
      * Обрабатывает урон
      *
      * @param event
      */
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
+        plugin.log(event.getCause().toString(), plugin.ANSI_BLUE);
+
+
         LivingEntity entity = getEntity(event.getEntity());
 
         if (entity == null) {
@@ -124,5 +152,26 @@ public class RpgListener implements Listener {
         }
 
         return Mobs.getMobData(entity, plugin).level;
+    }
+
+    /**
+     * Вычисляет расстояние до ближайшего пользователя
+     *
+     * @param entity
+     * @return
+     */
+    private double distanceToPlayer(LivingEntity entity) {
+        double min = 100, _min;
+
+        for (World world : Bukkit.getWorlds()) {
+            for (Player player : world.getPlayers()) {
+                _min = Helper.betweenPoints(entity.getLocation(), player.getLocation());
+                if (_min < min) {
+                    min = _min;
+                }
+            }
+        }
+
+        return min;
     }
 }
