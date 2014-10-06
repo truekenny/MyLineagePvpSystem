@@ -1,5 +1,6 @@
 package me.truekenny.MyLineagePvpSystem;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -62,11 +63,13 @@ public class PvpSpawnCommand implements CommandExecutor {
         EntityType entityType;
         LivingEntity entity;
         World world = player.getWorld();
+        Location location = player.getTargetBlock(null, 100).getLocation().clone();
+        location.setY(location.getY() + 1.1);
 
         for (int i = 1; i <= count; i++) {
             try {
                 entityType = EntityType.valueOf(mobName.toUpperCase());
-                entity = (LivingEntity) (world.spawnEntity(player.getLocation(), entityType));
+                entity = (LivingEntity) (world.spawnEntity(location, entityType));
             } catch (Exception e) {
                 player.sendMessage("Only: CREEPER, SKELETON, SPIDER, GIANT, ZOMBIE, SLIME, GHAST, PIG_ZOMBIE, ENDERMAN, CAVE_SPIDER, SILVERFISH, BLAZE, MAGMA_CUBE, ENDER_DRAGON, WITHER, BAT, WITCH, PIG, SHEEP, COW, CHICKEN, SQUID, WOLF, MUSHROOM_COW, SNOWMAN, OCELOT, IRON_GOLEM, HORSE, VILLAGER");
 
@@ -77,6 +80,7 @@ public class PvpSpawnCommand implements CommandExecutor {
                 Mobs.getMobData(entity, plugin).setLevel(entity, level);
             }
         }
+        location = null;
 
         return true;
     }
