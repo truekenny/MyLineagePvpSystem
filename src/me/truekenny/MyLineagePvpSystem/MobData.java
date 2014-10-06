@@ -15,6 +15,7 @@ public class MobData {
      * @param entity
      */
     public MobData(LivingEntity entity, MyLineagePvpSystem plugin) {
+
         this.plugin = plugin;
         Location spawn = entity.getWorld().getSpawnLocation();
         Location mob = entity.getLocation();
@@ -32,8 +33,10 @@ public class MobData {
             level += plugin.config.getInt("rpg.beginLevel.theEnd");
         }
 
-        entity.setCustomName(getName(entity.getType()) + " " + level);
-        entity.setCustomNameVisible(plugin.config.getBoolean("rpg.levelAlwaysVisible"));
+        if(plugin.config.getBoolean("rpg.skipVillager") && entity.getType() == EntityType.VILLAGER) {
+            entity.setCustomName(getName(entity.getType()) + " " + level);
+            entity.setCustomNameVisible(plugin.config.getBoolean("rpg.levelAlwaysVisible"));
+        }
     }
 
     /**

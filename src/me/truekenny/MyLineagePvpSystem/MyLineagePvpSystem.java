@@ -99,6 +99,8 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("rpg.beginLevel.nether", 25);
         config.addDefault("rpg.beginLevel.theEnd", 50);
         config.addDefault("rpg.levelAlwaysVisible", false);
+        config.addDefault("rpg.skipVillager", true);
+        config.addDefault("rpg.levelDifferenceForExperience", 5);
 
         config.addDefault("rpg.name.CREEPER", "Creeper");
         config.addDefault("rpg.name.SKELETON", "Skeleton");

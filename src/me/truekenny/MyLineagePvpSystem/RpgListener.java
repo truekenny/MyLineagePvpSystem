@@ -64,7 +64,7 @@ public class RpgListener implements Listener {
      */
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        plugin.log(event.getCause().toString(), plugin.ANSI_BLUE);
+        // plugin.log(event.getCause().toString(), plugin.ANSI_BLUE);
 
 
         LivingEntity entity = getEntity(event.getEntity());
@@ -85,7 +85,7 @@ public class RpgListener implements Listener {
         long levelDamager = getLevel(damager);
 
 
-        plugin.log("onEntityDamage: " + damager.getType() + "(" + levelDamager + ") -(" + event.getDamage() + ")> " + entity.getType() + "(" + levelEntity + ")", MyLineagePvpSystem.ANSI_BLUE);
+        // plugin.log("onEntityDamage: " + damager.getType() + "(" + levelDamager + ") -(" + event.getDamage() + ")> " + entity.getType() + "(" + levelEntity + ")", MyLineagePvpSystem.ANSI_BLUE);
 
         event.setDamage(event.getDamage() * Math.pow(levelDamager / levelEntity, plugin.config.getDouble("rpg.difficulty")));
     }
@@ -114,7 +114,7 @@ public class RpgListener implements Listener {
 
         plugin.log("onEntityDeath: " + killer.getType() + "(" + levelDamager + ") -> " + livingEntity.getType() + "(" + levelEntity + ")", MyLineagePvpSystem.ANSI_RED);
 
-        if (Math.abs(levelEntity - levelDamager) > 5) {
+        if (Math.abs(levelEntity - levelDamager) > plugin.config.getInt("rpg.levelDifferenceForExperience")) {
             event.setDroppedExp(0);
             plugin.log("onEntityDeath: noExp", MyLineagePvpSystem.ANSI_RED);
         }
@@ -122,6 +122,8 @@ public class RpgListener implements Listener {
         Mobs.remove(livingEntity.getEntityId());
     }
 
+
+    int moveCount = 0;
     /**
      * Обрабатывает перемещение игрока и обновление имен мобов
      *
@@ -130,6 +132,12 @@ public class RpgListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         // plugin.log("onPlayerMove: ", MyLineagePvpSystem.ANSI_RED);
+        moveCount++;
+
+        if(moveCount % 500 != 0) {
+            return;
+        }
+
         Player player = event.getPlayer();
 
         for (Entity entity : player.getNearbyEntities(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())) {
