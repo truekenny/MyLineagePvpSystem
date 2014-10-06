@@ -1,5 +1,6 @@
 package me.truekenny.MyLineagePvpSystem;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -70,6 +71,7 @@ public class PvpSpawnCommand implements CommandExecutor {
             try {
                 entityType = EntityType.valueOf(mobName.toUpperCase());
                 entity = (LivingEntity) (world.spawnEntity(location, entityType));
+                plugin.log("Spawn: " + String.valueOf(entity.getEntityId()), plugin.ANSI_BLACK);
             } catch (Exception e) {
                 player.sendMessage("Only: CREEPER, SKELETON, SPIDER, GIANT, ZOMBIE, SLIME, GHAST, PIG_ZOMBIE, ENDERMAN, CAVE_SPIDER, SILVERFISH, BLAZE, MAGMA_CUBE, ENDER_DRAGON, WITHER, BAT, WITCH, PIG, SHEEP, COW, CHICKEN, SQUID, WOLF, MUSHROOM_COW, SNOWMAN, OCELOT, IRON_GOLEM, HORSE, VILLAGER");
 

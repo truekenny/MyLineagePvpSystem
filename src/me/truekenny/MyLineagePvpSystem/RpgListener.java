@@ -133,14 +133,13 @@ public class RpgListener implements Listener {
             return (LivingEntity) projectile.getShooter();
         }
 
-        LivingEntity livingEntity = null;
-        try {
-            livingEntity = (LivingEntity) entity;
-        } catch (Exception e) {
-            plugin.log("getEntity: ERROR #1", MyLineagePvpSystem.ANSI_RED);
+        // Не живое существо
+        if (!(entity instanceof LivingEntity)) {
+
+            return null;
         }
 
-        return livingEntity;
+        return (LivingEntity) entity;
     }
 
     /**
