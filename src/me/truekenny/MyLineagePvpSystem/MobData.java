@@ -21,18 +21,19 @@ public class MobData {
 
         // System.out.println("Loc: " + entity.getWorld().getName());
 
-        level = Math.round(Helper.betweenPoints(spawn, mob) / 100) + 1; // 100 блоков = 1 уровень
+        level = Math.round(Helper.betweenPoints(spawn, mob) / plugin.config.getInt("rpg.metersPerLevel")) +
+                plugin.config.getInt("rpg.beginLevel.default"); // 100 блоков = 1 уровень
 
         if (entity.getWorld().getName().equalsIgnoreCase("world_nether")) {
-            level += 25;
+            level += plugin.config.getInt("rpg.beginLevel.nether");
         }
 
         if (entity.getWorld().getName().equalsIgnoreCase("world_the_end")) {
-            level += 50;
+            level += plugin.config.getInt("rpg.beginLevel.theEnd");
         }
 
         entity.setCustomName(getName(entity.getType()) + " " + level);
-        entity.setCustomNameVisible(true);
+        entity.setCustomNameVisible(plugin.config.getBoolean("rpg.levelAlwaysVisible"));
     }
 
     /**

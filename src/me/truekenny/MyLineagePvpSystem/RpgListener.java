@@ -13,6 +13,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class RpgListener implements Listener {
 
@@ -86,7 +87,7 @@ public class RpgListener implements Listener {
 
         plugin.log("onEntityDamage: " + damager.getType() + "(" + levelDamager + ") -(" + event.getDamage() + ")> " + entity.getType() + "(" + levelEntity + ")", MyLineagePvpSystem.ANSI_BLUE);
 
-        event.setDamage(event.getDamage() * levelDamager / levelEntity);
+        event.setDamage(event.getDamage() * Math.pow(levelDamager / levelEntity, plugin.config.getDouble("rpg.difficulty")));
     }
 
     /**
@@ -119,6 +120,23 @@ public class RpgListener implements Listener {
         }
 
         Mobs.remove(livingEntity.getEntityId());
+    }
+
+    /**
+     * Обрабатывает перемещение игрока и обновление имен мобов
+     *
+     * @param event
+     */
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        // plugin.log("onPlayerMove: ", MyLineagePvpSystem.ANSI_RED);
+        Player player = event.getPlayer();
+
+        for (Entity entity : player.getNearbyEntities(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())) {
+            if (entity instanceof LivingEntity) {
+                Mobs.getMobData((LivingEntity) entity, plugin);
+            }
+        }
     }
 
     /**

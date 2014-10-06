@@ -1,6 +1,7 @@
 package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +30,9 @@ public class MyLineagePvpSystem extends JavaPlugin {
 
         if(config.getBoolean("rpg.enable")) {
             Mobs.load(this);
+
+
+
             pm.registerEvents(new RpgListener(this), this);
         } else {
             log("MyLineagePvpSystem: Rpg game disabled by config (rpg.enable)", ANSI_RED);
@@ -89,6 +93,12 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("time.purple", 30);
 
         config.addDefault("rpg.enable", false);
+        config.addDefault("rpg.difficulty", 0.33);
+        config.addDefault("rpg.metersPerLevel", 100);
+        config.addDefault("rpg.beginLevel.default", 1);
+        config.addDefault("rpg.beginLevel.nether", 25);
+        config.addDefault("rpg.beginLevel.theEnd", 50);
+        config.addDefault("rpg.levelAlwaysVisible", false);
 
         config.addDefault("rpg.name.CREEPER", "Creeper");
         config.addDefault("rpg.name.SKELETON", "Skeleton");
