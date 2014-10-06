@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class RpgListener implements Listener {
 
     private final MyLineagePvpSystem plugin;
+    int moveCount = 0;
 
     public RpgListener(MyLineagePvpSystem plugin) {
         this.plugin = plugin;
@@ -85,9 +86,15 @@ public class RpgListener implements Listener {
         long levelDamager = getLevel(damager);
 
 
-        // plugin.log("onEntityDamage: " + damager.getType() + "(" + levelDamager + ") -(" + event.getDamage() + ")> " + entity.getType() + "(" + levelEntity + ")", MyLineagePvpSystem.ANSI_BLUE);
+        if (false) {
+            plugin.log("onEntityDamage: " + damager.getType() + "(" + levelDamager + ") -(" + event.getDamage() + ")> " + entity.getType() + "(" + levelEntity + ")", MyLineagePvpSystem.ANSI_BLUE);
+            plugin.log("onEntityDamage: d:" + levelDamager, MyLineagePvpSystem.ANSI_BLUE);
+            plugin.log("onEntityDamage: e:" + levelEntity, MyLineagePvpSystem.ANSI_BLUE);
+            plugin.log("onEntityDamage: ~:" + plugin.config.getDouble("rpg.difficulty"), MyLineagePvpSystem.ANSI_BLUE);
+            plugin.log("onEntityDamage: =" + Math.pow(1.0 * levelDamager / levelEntity, plugin.config.getDouble("rpg.difficulty")), MyLineagePvpSystem.ANSI_BLUE);
+        }
 
-        event.setDamage(event.getDamage() * Math.pow(levelDamager / levelEntity, plugin.config.getDouble("rpg.difficulty")));
+        event.setDamage(event.getDamage() * Math.pow(1.0 * levelDamager / levelEntity, plugin.config.getDouble("rpg.difficulty")));
     }
 
     /**
@@ -122,8 +129,6 @@ public class RpgListener implements Listener {
         Mobs.remove(livingEntity.getEntityId());
     }
 
-
-    int moveCount = 0;
     /**
      * Обрабатывает перемещение игрока и обновление имен мобов
      *
@@ -134,7 +139,7 @@ public class RpgListener implements Listener {
         // plugin.log("onPlayerMove: ", MyLineagePvpSystem.ANSI_RED);
         moveCount++;
 
-        if(moveCount % 500 != 0) {
+        if (moveCount % 500 != 0) {
             return;
         }
 
@@ -178,7 +183,10 @@ public class RpgListener implements Listener {
         if (entity instanceof Player) {
 
             long level = ((Player) entity).getLevel();
-            level = (level == 0) ? 1 : level;
+            if (level == 0) {
+
+                return 1;
+            }
 
             return level;
         }

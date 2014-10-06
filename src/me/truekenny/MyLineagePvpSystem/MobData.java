@@ -33,10 +33,12 @@ public class MobData {
             level += plugin.config.getInt("rpg.beginLevel.theEnd");
         }
 
-        if(plugin.config.getBoolean("rpg.skipVillager") && entity.getType() == EntityType.VILLAGER) {
+        if (plugin.config.getBoolean("rpg.skipVillager") && entity.getType() == EntityType.VILLAGER) {
+        } else {
             entity.setCustomName(getName(entity.getType()) + " " + level);
             entity.setCustomNameVisible(plugin.config.getBoolean("rpg.levelAlwaysVisible"));
         }
+
     }
 
     /**
