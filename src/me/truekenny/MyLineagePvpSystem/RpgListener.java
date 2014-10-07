@@ -45,9 +45,17 @@ public class RpgListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         // plugin.log(event.getCause().toString(), plugin.ANSI_RED);
 
-        if (event.getCause().toString().equalsIgnoreCase("FIRE_TICK") && plugin.config.getBoolean("rpg.protectMobsOfFireDamage")) {
+        if (event.getCause().toString().equalsIgnoreCase("FIRE_TICK")) {
             LivingEntity entity = getEntity(event.getEntity());
+
             if (!entity.getType().toString().equalsIgnoreCase("PLAYER")) {
+
+                boolean unprotectedLVL = Mobs.getMobData(entity, plugin).level < plugin.config.getInt("rpg.stillProtectMobsLVLOfFireDamage");
+                if (unprotectedLVL && plugin.config.getBoolean("rpg.protectMobsOfFireDamage")) {
+
+                    return;
+                }
+
                 if (distanceToPlayer(entity) < 15) {
                     event.setDamage(event.getDamage() / Mobs.getMobData(entity, plugin).level);
                 } else {

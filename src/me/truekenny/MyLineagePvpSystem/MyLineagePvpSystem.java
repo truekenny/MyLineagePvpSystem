@@ -102,6 +102,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("rpg.skipVillager", true);
         config.addDefault("rpg.levelDifferenceForExperience", 5);
         config.addDefault("rpg.protectMobsOfFireDamage", false);
+        config.addDefault("rpg.stillProtectMobsLVLOfFireDamage", 50);
 
         config.addDefault("rpg.name.CREEPER", "Creeper");
         config.addDefault("rpg.name.SKELETON", "Skeleton");
