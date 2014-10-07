@@ -50,8 +50,8 @@ public class RpgListener implements Listener {
 
             if (!entity.getType().toString().equalsIgnoreCase("PLAYER")) {
 
-                boolean unprotectedLVL = Mobs.getMobData(entity, plugin).level < plugin.config.getInt("rpg.stillProtectMobsLVLOfFireDamage");
-                if (unprotectedLVL && plugin.config.getBoolean("rpg.protectMobsOfFireDamage")) {
+                boolean protectedLVL = Mobs.getMobData(entity, plugin).level >= plugin.config.getInt("rpg.stillProtectMobsLVLOfFireDamage");
+                if (protectedLVL || plugin.config.getBoolean("rpg.protectMobsOfFireDamage")) {
 
                     return;
                 }
