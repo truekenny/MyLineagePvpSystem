@@ -94,6 +94,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
 
         config.addDefault("rpg.enable", false);
         config.addDefault("rpg.difficulty", 0.33);
+        config.addDefault("rpg.expDifficulty", 0.35);
         config.addDefault("rpg.metersPerLevel", 100);
         config.addDefault("rpg.beginLevel.default", 1);
         config.addDefault("rpg.beginLevel.nether", 25);

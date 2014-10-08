@@ -132,6 +132,17 @@ public class RpgListener implements Listener {
         if (Math.abs(levelEntity - levelDamager) > plugin.config.getInt("rpg.levelDifferenceForExperience")) {
             event.setDroppedExp(0);
             plugin.log("onEntityDeath: noExp", MyLineagePvpSystem.ANSI_RED);
+        } else {
+            long levelBetween = Math.abs(levelDamager - levelEntity);
+            if (levelBetween == 0) {
+                levelBetween = 1;
+            }
+            int dropExp = (int) Math.round(event.getDroppedExp() * Math.pow(1.0 / levelBetween, plugin.config.getDouble("rpg.expDifficulty")));
+            if (dropExp == 0) {
+                dropExp = 1;
+            }
+            plugin.log("onEntityDeath: Exp: " + event.getDroppedExp() + " -> " + dropExp, MyLineagePvpSystem.ANSI_RED);
+            event.setDroppedExp(dropExp);
         }
 
         Mobs.remove(livingEntity.getEntityId());
