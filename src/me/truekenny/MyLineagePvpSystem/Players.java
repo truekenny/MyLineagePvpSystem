@@ -2,7 +2,6 @@ package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.kitteh.tag.TagAPI;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,6 +10,8 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
+
+//import org.kitteh.tag.TagAPI;
 
 public class Players {
     final public String FILENAME = "plugins/MyLineagePvpSystem/pvpplayers.data";
@@ -69,7 +70,8 @@ public class Players {
                 player = plugin.getServer().getPlayer(nick);
 
                 if (player != null) {
-                    TagAPI.refreshPlayer(player);
+                    //TagAPI.refreshPlayer(player);
+                    plugin.colorListener.updateColor(player);
 
                     sendColorMessage(playerData.getColor(), player);
                 }

@@ -17,12 +17,13 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
-import org.kitteh.tag.TagAPI;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+// import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
+//import org.kitteh.tag.TagAPI;
 
 public class PlayerListener implements Listener {
     private static final Set<String> types = new HashSet<String>(Arrays.asList(
@@ -71,7 +72,8 @@ public class PlayerListener implements Listener {
         // Уменьшить карму
         plugin.log("died: " + player.getName() + "", plugin.ANSI_PURPLE);
         if (plugin.players.getPlayerData(player).died()) {
-            TagAPI.refreshPlayer(player);
+            // TagAPI.refreshPlayer(player);
+            plugin.colorListener.updateColor(player);
         }
         setKillerEffects(player);
     }
@@ -164,7 +166,9 @@ public class PlayerListener implements Listener {
         //
         plugin.log("murder: " + killer.getName() + " -> " + player.getName(), plugin.ANSI_RED);
         if (plugin.players.getPlayerData(killer).murder(player)) {
-            TagAPI.refreshPlayer(killer);
+            //TagAPI.refreshPlayer(killer);
+            plugin.colorListener.updateColor(killer);
+
             setKillerEffects(killer);
         }
     }
@@ -205,7 +209,10 @@ public class PlayerListener implements Listener {
     private void cleansing(Player player) {
         plugin.log("cleansing: " + player.getName() + "", plugin.ANSI_GREEN);
         if (plugin.players.getPlayerData(player).cleansing()) {
-            TagAPI.refreshPlayer(player);
+
+            //TagAPI.refreshPlayer(player);
+            plugin.colorListener.updateColor(player);
+
             removeKillerEffects(player);
         }
     }
@@ -298,7 +305,9 @@ public class PlayerListener implements Listener {
         plugin.log("hit: " + damager.getName() + " -> " + player.getName(), plugin.ANSI_YELLOW);
 
         if (plugin.players.getPlayerData(damager).hit(player)) {
-            TagAPI.refreshPlayer(damager);
+            // TagAPI.refreshPlayer(damager);
+            plugin.colorListener.updateColor(damager);
+
         }
     }
 
@@ -307,6 +316,7 @@ public class PlayerListener implements Listener {
      *
      * @param event
      */
+/*
     @EventHandler
     public void onNameTag(AsyncPlayerReceiveNameTagEvent event) {
         Player player = event.getNamedPlayer();
@@ -314,8 +324,8 @@ public class PlayerListener implements Listener {
         if(plugin.checkWorld(plugin.NOTWORK, player)) return;
 
         event.setTag(getPlayerColor(player) + player.getName());
-        // plugin.log("onNameTag: " + player.getName());
     }
+*/
 
     /**
      * Возвращает цвет ника пользователя

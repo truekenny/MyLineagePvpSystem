@@ -1,7 +1,6 @@
 package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,6 +10,7 @@ import java.util.logging.Logger;
 public class MyLineagePvpSystem extends JavaPlugin {
     private Logger log = Logger.getLogger("Minecraft");
     public PlayerListener playerListener;
+    public ColorListener colorListener;
     public Players players;
     private int taskId;
 
@@ -25,6 +25,9 @@ public class MyLineagePvpSystem extends JavaPlugin {
         players = new Players(this);
 
         PluginManager pm = getServer().getPluginManager();
+
+        colorListener = new ColorListener(this);
+        pm.registerEvents(colorListener, this);
         playerListener = new PlayerListener(this);
         pm.registerEvents(playerListener, this);
 
@@ -59,6 +62,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
     public void defaultConfig() {
         config = getConfig();
 
+        config.addDefault("debug", false);
         config.addDefault("local.statusPeace", "You went into a peaceful mode"); // Вы перешли в Мирный режим
         config.addDefault("local.statusPVP", "You went into a PVP mode"); // Вы перешли в режим PVP
         config.addDefault("local.statusPK", "You have become a murderer, are imposed on you the effect of slowing, fatigue, weakness"); // Вы стали Убийцей, на вас наложены эффекты Замедление, Усталость, Слабость
@@ -156,10 +160,19 @@ public class MyLineagePvpSystem extends JavaPlugin {
     }
 
     public void log(String text) {
-        // log(text, ANSI_GREEN);
+        if(config.getBoolean("debug")) {
+            log("debug: " + text, ANSI_GREEN);
+        }
     }
 
+    /**
+     * Индекс мира
+     */
     public static final int NOTWORK = 0;
+
+    /**
+     * Индекс мира
+     */
     public static final int NOTCLEANKARMA = 1;
 
     /**
