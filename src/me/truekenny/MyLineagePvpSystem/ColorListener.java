@@ -35,7 +35,7 @@ public class ColorListener implements Listener {
         scoreboard = plugin.getServer().getScoreboardManager().getMainScoreboard();
         plugin.log("team count 1=" + scoreboard.getTeams().size());
 
-        resetScoreboard();
+        // resetScoreboard();
 
         plugin.log("team count 2=" + scoreboard.getTeams().size());
 
@@ -71,13 +71,16 @@ public class ColorListener implements Listener {
      */
     private void initializeTeam(String teamName, String prefix, String suffix) {
         plugin.log("initializeTeam " + teamName + " = " + prefix + ".");
-        if (scoreboard.getTeam(teamName) == null) {
-            plugin.log("initializeTeam new:" + teamName + " = " + prefix + ".");
-            Team team = scoreboard.registerNewTeam(teamName);
-            team.setPrefix(prefix);
-            team.setSuffix(suffix);
 
+        Team team = scoreboard.getTeam(teamName);
+
+        if (team == null) {
+            plugin.log("initializeTeam new:" + teamName + " = " + prefix + ".");
+            team = scoreboard.registerNewTeam(teamName);
         }
+
+        team.setPrefix(prefix);
+        team.setSuffix(suffix);
     }
 
     /**
@@ -105,7 +108,7 @@ public class ColorListener implements Listener {
             return;
         }
 
-        if(player.isOp()) {
+        if (player.isOp()) {
             scoreboard.getTeam("OP").addPlayer(player);
 
             return;
@@ -130,6 +133,16 @@ public class ColorListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         updateColor(e.getPlayer());
+
+        final Player player = e.getPlayer();
+
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                updateColor(player);
+            }
+
+        });
     }
 
     /**
