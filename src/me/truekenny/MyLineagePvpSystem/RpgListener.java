@@ -43,27 +43,35 @@ public class RpgListener implements Listener {
      */
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        // plugin.log(event.getCause().toString(), plugin.ANSI_RED);
 
-        if (event.getCause().toString().equalsIgnoreCase("FIRE_TICK")) {
-            LivingEntity entity = getEntity(event.getEntity());
+        if (!event.getCause().toString().equalsIgnoreCase("FIRE_TICK")) {
+            plugin.log("----- onEntityDamage Пропущено: Урон не от огня");
 
-            if (!entity.getType().toString().equalsIgnoreCase("PLAYER")) {
-
-                boolean protectedLVL = Mobs.getMobData(entity, plugin).level >= plugin.config.getInt("rpg.stillProtectMobsLVLOfFireDamage");
-                if (protectedLVL || plugin.config.getBoolean("rpg.protectMobsOfFireDamage")) {
-
-                    return;
-                }
-
-                if (distanceToPlayer(entity) < 15) {
-                    event.setDamage(event.getDamage() / Mobs.getMobData(entity, plugin).level);
-                } else {
-                }
-            }
-
+            return;
         }
 
+        LivingEntity entity = getEntity(event.getEntity());
+        if (entity.getType().toString().equalsIgnoreCase("PLAYER")) {
+            plugin.log("onEntityDamage Пропущено: Существо игрок");
+
+            return;
+        }
+
+        boolean protectedLVL = Mobs.getMobData(entity, plugin).level >= plugin.config.getInt("rpg.stillProtectMobsLVLOfFireDamage");
+        plugin.log("onEntityDamage Защита по уровню=" + String.valueOf(protectedLVL));
+        plugin.log("onEntityDamage Защита всех мобов=" + String.valueOf(plugin.config.getBoolean("rpg.protectMobsOfFireDamage")));
+        if (!protectedLVL && !plugin.config.getBoolean("rpg.protectMobsOfFireDamage")) {
+            plugin.log("onEntityDamage Пропущено: Моб не будет защищен");
+
+            return;
+        }
+
+        if (distanceToPlayer(entity) < 15) {
+            plugin.log("onEntityDamage Дистанция до игрока мала - урон от огня уменьшен");
+            event.setDamage(event.getDamage() / (1.0 * Mobs.getMobData(entity, plugin).level));
+        } else {
+            plugin.log("onEntityDamage Дистанция до игрока велика - урон от огня НЕ уменьшен");
+        }
     }
 
     /**
