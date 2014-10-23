@@ -188,6 +188,12 @@ public class RpgListener implements Listener {
     private LivingEntity getEntity(Entity entity) {
         if (entity instanceof Projectile) {
             Projectile projectile = (Projectile) entity;
+
+            if (!(projectile.getShooter() instanceof LivingEntity)) {
+
+                return null;
+            }
+
             return (LivingEntity) projectile.getShooter();
         }
 
