@@ -156,13 +156,13 @@ public class MyLineagePvpSystem extends JavaPlugin {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     public void log(String text, String color) {
-        this.log.info(color + text + ANSI_RESET);
+        if(config.getBoolean("debug")) {
+            this.log.info("debug [MyLineagePvpSystem]: " + color + text + ANSI_RESET);
+        }
     }
 
     public void log(String text) {
-        if(config.getBoolean("debug")) {
-            log("debug: " + text, ANSI_GREEN);
-        }
+        log(text, ANSI_GREEN);
     }
 
     /**
