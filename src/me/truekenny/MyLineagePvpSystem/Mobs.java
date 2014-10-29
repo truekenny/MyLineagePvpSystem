@@ -86,7 +86,7 @@ public class Mobs {
      *
      * @return
      */
-    public static boolean save() {
+    public static boolean save(MyLineagePvpSystem plugin) {
         Enumeration<Integer> e = mobDataHashtable.keys();
         PrintWriter out;
         try {
@@ -95,9 +95,17 @@ public class Mobs {
             return false;
         }
 
+        int minLevelForSave = plugin.config.getInt("rpg.beginLevel.theEnd") + 1000 / plugin.config.getInt("rpg.metersPerLevel");
+
+        plugin.log("Level: " +String.valueOf(minLevelForSave));
+
         while (e.hasMoreElements()) {
             Integer id = e.nextElement();
             MobData mobData = mobDataHashtable.get(id);
+
+            if(mobData.level < minLevelForSave && plugin.config.getBoolean("optimize.save.mobs")) {
+                continue;
+            }
 
             out.printf("%d %d\n", id, mobData.level);
         }

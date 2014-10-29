@@ -53,7 +53,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         players.destroy();
         getServer().getScheduler().cancelTask(taskId);
         if(config.getBoolean("rpg.enable")) {
-            Mobs.save();
+            Mobs.save(this);
         }
 
         log("MyLineagePvpSystem has been disabled.");
@@ -139,6 +139,8 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("rpg.name.HORSE", "Horse");
         config.addDefault("rpg.name.VILLAGER", "Villager");
         config.addDefault("rpg.name.default", "Level");
+
+        config.addDefault("optimize.save.mobs", false);
 
 
         config.options().copyDefaults(true);
