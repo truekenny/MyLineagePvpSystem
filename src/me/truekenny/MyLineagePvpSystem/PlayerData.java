@@ -11,6 +11,7 @@ public class PlayerData {
     private int pvp = 0;
     private int pk = 0;
     private int death = 0;
+    private int soeTimeout = -1;
 
     public PlayerData(Players players) {
         this.players = players;
@@ -137,32 +138,67 @@ public class PlayerData {
         return true;
     }
 
+    /**
+     * Стартует Свиток возврата
+     */
+    public void startSoe() {
+        soeTimeout = players.plugin.config.getInt("time.soe");
+    }
+
+    /**
+     * Тик на использование скрола
+     *
+     * @return признак, что игрока надо портовать на спавн
+     */
+    public boolean tickSoe() {
+        // players.plugin.log("tickSoe " + String.valueOf(soeTimeout));
+        soeTimeout--;
+
+        return soeTimeout == 0;
+    }
+
+    /**
+     * Игрок в режиме возврата
+     * @return
+     */
+    public boolean inSoe() {
+        if(soeTimeout <= 0) {
+
+            return false;
+        }
+
+        soeTimeout = -1;
+
+        return true;
+
+    }
+
     public int getPk() {
         return pk;
-    }
-
-    public int getPvp() {
-        return pvp;
-    }
-
-    public int getKarma() {
-        return karma;
-    }
-
-    public int getDeath() {
-        return death;
     }
 
     public void setPk(int pk) {
         this.pk = pk;
     }
 
+    public int getPvp() {
+        return pvp;
+    }
+
     public void setPvp(int pvp) {
         this.pvp = pvp;
     }
 
+    public int getKarma() {
+        return karma;
+    }
+
     public void setKarma(int karma) {
         this.karma = karma;
+    }
+
+    public int getDeath() {
+        return death;
     }
 
     public void setDeath(int death) {

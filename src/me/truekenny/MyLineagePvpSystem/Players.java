@@ -1,6 +1,6 @@
 package me.truekenny.MyLineagePvpSystem;
 
-import org.bukkit.ChatColor;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
@@ -17,6 +17,7 @@ public class Players {
     final public String FILENAME = "plugins/MyLineagePvpSystem/pvpplayers.data";
     public MyLineagePvpSystem plugin;
     private Hashtable<String, PlayerData> playerDataHashtable = new Hashtable<String, PlayerData>();
+    private Location spawn;
 
     /**
      * Конструктор
@@ -25,6 +26,8 @@ public class Players {
      */
     public Players(MyLineagePvpSystem plugin) {
         this.plugin = plugin;
+
+        getSpawn();
         load();
     }
 
@@ -74,6 +77,33 @@ public class Players {
                     plugin.colorListener.updateColor(player);
 
                     sendColorMessage(playerData.getColor(), player);
+                }
+            }
+        }
+    }
+
+    /**
+     * Проверяет игроков, которые используют свиток возврата
+     */
+    public void updateSoe() {
+        Enumeration<String> e = playerDataHashtable.keys();
+        Player player;
+
+        if(spawn == null) {
+
+            return;
+        }
+
+        while (e.hasMoreElements()) {
+            String nick = e.nextElement();
+            player = plugin.getServer().getPlayer(nick);
+
+            if (player != null) {
+                PlayerData playerData = playerDataHashtable.get(nick);
+
+                if (playerData.tickSoe()) {
+                    player.teleport(spawn);
+                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
                 }
             }
         }
@@ -204,5 +234,36 @@ public class Players {
         out.close();
 
         return true;
+    }
+
+    /**
+     * Устанавливает локацию для SOE
+     */
+    private void getSpawn() {
+        World world = plugin.getServer().getWorld("world");
+
+        if (world == null) {
+            plugin.log("World «world» not found (/pvpsoe not work).");
+
+            return;
+        }
+
+        Location location = world.getSpawnLocation();
+        Location location1 = location.clone();
+        for (int y = 0; y <= 10; y++) {
+
+            location1 = location.clone();
+            location.setY(location.getY() + 1);
+
+            plugin.log("Block1: " + location1.getBlock().toString());
+            plugin.log("Block: " + location.getBlock().toString());
+
+            if (location.getBlock().getType() == Material.AIR && location1.getBlock().getType() == Material.AIR) {
+                break;
+            }
+
+        }
+
+        spawn = location1;
     }
 }

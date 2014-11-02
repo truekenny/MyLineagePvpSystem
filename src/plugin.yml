@@ -1,6 +1,6 @@
 name: MyLineagePvpSystem
 main: me.truekenny.MyLineagePvpSystem.MyLineagePvpSystem
-version: 1.2.5
+version: 1.2.6
 commands:
   pvpstatus:
     description: Displays user status.
@@ -8,3 +8,6 @@ commands:
   pvpspawn:
     description: Spawn mob.
     usage: "Usage: '/pvpspawn mobName [level [count]]', default level is auto assign"
+  pvpsoe:
+    description: Escape to spawn.
+    usage: "Usage: '/pvpsoe', use Scroll of escape"

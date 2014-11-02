@@ -43,7 +43,7 @@ public class ColorListener implements Listener {
         initializeTeam("RED", ChatColor.RED.toString() + "☠ ", " ☠");
         initializeTeam("DARK_PURPLE", ChatColor.DARK_PURPLE.toString() + "⚔ ", " ⚔");
         initializeTeam("LIGHT_PURPLE", ChatColor.LIGHT_PURPLE.toString(), "");
-        initializeTeam("WHITE", ChatColor.WHITE.toString(), "");
+        initializeTeam("WHITE", /*ChatColor.WHITE.toString()*/"", "");
         initializeTeam("OP", ChatColor.GREEN.toString(), "");
         teams = Lists.newArrayList(scoreboard.getTeams());
 

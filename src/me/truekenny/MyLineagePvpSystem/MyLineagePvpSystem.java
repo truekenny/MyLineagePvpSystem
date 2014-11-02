@@ -13,6 +13,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
     public ColorListener colorListener;
     public Players players;
     private int taskId;
+    private int taskIdSoe;
 
     /**
      * Экземпляр конфигурации
@@ -43,15 +44,18 @@ public class MyLineagePvpSystem extends JavaPlugin {
 
         getCommand("pvpstatus").setExecutor(new PvpStatusCommand(this));
         getCommand("pvpspawn").setExecutor(new PvpSpawnCommand(this));
+        getCommand("pvpsoe").setExecutor(new PvpSoeCommand(this));
 
         log("MyLineagePvpSystem has been enabled!");
 
         taskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, new ColorTask(this), 0, 20);
+        taskIdSoe = getServer().getScheduler().scheduleSyncRepeatingTask(this, new SoeTask(this), 0, 20);
     }
 
     public void onDisable() {
         players.destroy();
         getServer().getScheduler().cancelTask(taskId);
+        getServer().getScheduler().cancelTask(taskIdSoe);
         if(config.getBoolean("rpg.enable")) {
             Mobs.save(this);
         }
@@ -75,6 +79,10 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("local.statisticModePVP", "You are in a PVP mode"); // Вы в режиме PVP
         config.addDefault("local.statisticModePK", "You are player killer"); // Вы Убийца
 
+        config.addDefault("local.soe.use", "You used a scroll of escape, do not move to continue his actions");
+        //Вы использовали свиток возврата, не двигайтесь для продолжения его действия.
+        config.addDefault("local.soe.cancel", "Scroll of escape canceled"); // Свиток возврата отменен.
+
         config.addDefault("drop.inventory.peace", 0);
         config.addDefault("drop.inventory.pvp", 10);
         config.addDefault("drop.inventory.pk", 100);
@@ -95,6 +103,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("world.doNotCleanKarma", "creative,world_creative");
 
         config.addDefault("time.purple", 30);
+        config.addDefault("time.soe", 30);
 
         config.addDefault("rpg.enable", false);
         config.addDefault("rpg.difficulty", 0.33);

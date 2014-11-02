@@ -48,7 +48,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeath(final PlayerDeathEvent event) {
         final Player player = event.getEntity();
-        if(plugin.checkWorld(plugin.NOTWORK, player)) return;
+        if (plugin.checkWorld(plugin.NOTWORK, player)) return;
 
         Player killer = player.getKiller();
 
@@ -111,7 +111,7 @@ public class PlayerListener implements Listener {
 
         // Begin drops
 
-        if(keepLevel) {
+        if (keepLevel) {
             // Сохранить ЭКСП
             event.setKeepLevel(true);
             event.setDroppedExp(0);
@@ -123,7 +123,7 @@ public class PlayerListener implements Listener {
         for (int i = 0; i < armor.length; i++) {
             ItemStack is = armor[i];
 
-            if (is != null && Math.random()*100 < 100 - dropArmor)
+            if (is != null && Math.random() * 100 < 100 - dropArmor)
                 event.getDrops().remove(is); // Сохраняется
             else
                 armor[i] = null; // Падает
@@ -147,7 +147,7 @@ public class PlayerListener implements Listener {
         for (int i = 0; i < inventory.length; i++) {
             ItemStack is = inventory[i];
 
-            if (is != null && Math.random()*100 < 100 - dropInventory)
+            if (is != null && Math.random() * 100 < 100 - dropInventory)
                 event.getDrops().remove(is); // Сохраняется
             else
                 inventory[i] = null; // Падает
@@ -192,8 +192,8 @@ public class PlayerListener implements Listener {
         Player killer = livingEntity.getKiller();
 
         if (killer != null && killer.getType().toString().equalsIgnoreCase("player")) {
-            if(plugin.checkWorld(plugin.NOTWORK, killer)) return;
-            if(plugin.checkWorld(plugin.NOTCLEANKARMA, killer)) return;
+            if (plugin.checkWorld(plugin.NOTWORK, killer)) return;
+            if (plugin.checkWorld(plugin.NOTCLEANKARMA, killer)) return;
 
             plugin.log("onEntityDeath: killer: " + ((Player) killer).getName());
 
@@ -238,7 +238,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(plugin.checkWorld(plugin.NOTWORK, (Player)entity)) return;
+        if (plugin.checkWorld(plugin.NOTWORK, (Player) entity)) return;
 
         Player damager = getDamager(event);
 
@@ -341,6 +341,11 @@ public class PlayerListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         //plugin.log("onPlayerMove: ");
         //plugin.players.updateNicks();
+
+        Player player = event.getPlayer();
+        if (plugin.players.getPlayerData(player).inSoe()) {
+            player.sendMessage(ChatColor.RED + plugin.config.getString("local.soe.cancel"));
+        }
     }
 
     /**
@@ -349,7 +354,7 @@ public class PlayerListener implements Listener {
      * @param player
      */
     public void setKillerEffects(Player player) {
-        if(plugin.checkWorld(plugin.NOTWORK, player)) {
+        if (plugin.checkWorld(plugin.NOTWORK, player)) {
             removeKillerEffects(player);
 
             return;
@@ -385,7 +390,7 @@ public class PlayerListener implements Listener {
 
         plugin.log("onPlayerRespawn: " + player.getName(), plugin.ANSI_BLUE);
 
-        if(plugin.checkWorld(plugin.NOTWORK, player)) return;
+        if (plugin.checkWorld(plugin.NOTWORK, player)) return;
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
