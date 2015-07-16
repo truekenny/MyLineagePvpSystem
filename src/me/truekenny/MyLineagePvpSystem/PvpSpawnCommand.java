@@ -77,7 +77,7 @@ public class PvpSpawnCommand implements CommandExecutor {
                 return false;
             }
 
-            if (level != 0) {
+            if (level != 0  && plugin.config.getBoolean("rpg.enable")) {
                 Mobs.getMobData(entity, plugin).setLevel(entity, level);
             }
         }
