@@ -27,7 +27,11 @@ import java.util.Set;
 
 public class PlayerListener implements Listener {
     private static final Set<String> types = new HashSet<String>(Arrays.asList(
-            new String[]{"SHEEP", "COW", "ZOMBIE", "SKELETON"}
+            new String[]{
+                    "CHICKEN", "COW", "HORSE", "PIG", "SHEEP", "WOLF",
+                    "BLAZE", "CAVE_SPIDER", "CREEPER", "ENDERMAN", "MAGMA_CUBE",
+                    "PIG_ZOMBIE", "SKELETON", "SLIME", "SPIDER", "WITCH", "ZOMBIE"
+            }
     ));
     final private int potionDuration = 20 * 30 * 24 * 60 * 60;
     /**
