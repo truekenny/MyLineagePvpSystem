@@ -28,7 +28,7 @@ import java.util.Set;
 public class PlayerListener implements Listener {
     private static final Set<String> types = new HashSet<String>(Arrays.asList(
             new String[]{
-                    "CHICKEN", "COW", "HORSE", "PIG", "SHEEP", "WOLF",
+                    "CHICKEN", "COW", "HORSE", "PIG", "RABBIT", "SHEEP", "SQUID", "WOLF",
                     "BLAZE", "CAVE_SPIDER", "CREEPER", "ENDERMAN", "MAGMA_CUBE",
                     "PIG_ZOMBIE", "SKELETON", "SLIME", "SPIDER", "WITCH", "ZOMBIE"
             }
