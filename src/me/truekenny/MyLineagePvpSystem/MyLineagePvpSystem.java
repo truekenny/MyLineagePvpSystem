@@ -45,6 +45,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         getCommand("pvpstatus").setExecutor(new PvpStatusCommand(this));
         getCommand("pvpspawn").setExecutor(new PvpSpawnCommand(this));
         getCommand("pvpsoe").setExecutor(new PvpSoeCommand(this));
+        getCommand("pvpcall").setExecutor(new PvpCallCommand(this));
 
         log("MyLineagePvpSystem has been enabled!");
 
@@ -83,6 +84,18 @@ public class MyLineagePvpSystem extends JavaPlugin {
         //Вы использовали свиток возврата, не двигайтесь для продолжения его действия.
         config.addDefault("local.soe.cancel", "Scroll of escape canceled"); // Свиток возврата отменен.
 
+        {
+            config.addDefault("local.call.use.start", "You used a scroll of call on _TARGET_, do not move to continue his actions");
+            config.addDefault("local.call.use.finish.player", "Scroll the call has been used");
+
+            config.addDefault("local.call.use.finish.target", "You have been called the player _PLAYER_");
+            config.addDefault("local.call.use.accept", "You used a scroll of call, do not move to continue his actions");
+            config.addDefault("local.call.use.notarget", "Scroll the call can not be used, you have no one called");
+            config.addDefault("local.call.use.self", "Scroll the call can not be used on yourself");
+
+            config.addDefault("local.call.cancel", "Scroll of call canceled");
+        }
+
         config.addDefault("drop.inventory.peace", 0);
         config.addDefault("drop.inventory.pvp", 10);
         config.addDefault("drop.inventory.pk", 100);
@@ -104,6 +117,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
 
         config.addDefault("time.purple", 30);
         config.addDefault("time.soe", 30);
+        config.addDefault("time.call", 30);
 
         config.addDefault("rpg.enable", false);
         config.addDefault("rpg.difficulty", 0.33);

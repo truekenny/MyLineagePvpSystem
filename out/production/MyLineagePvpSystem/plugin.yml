@@ -1,6 +1,6 @@
 name: MyLineagePvpSystem
 main: me.truekenny.MyLineagePvpSystem.MyLineagePvpSystem
-version: 1.2.9
+version: 1.2.10
 commands:
   pvpstatus:
     description: Displays user status.
@@ -11,3 +11,6 @@ commands:
   pvpsoe:
     description: Escape to spawn.
     usage: "Usage: '/pvpsoe', use Scroll of escape"
+  pvpcall:
+    description: Call player.
+    usage: "Usage: '/pvpcall [player]' call player or '/pvpcall' teleport to caller"

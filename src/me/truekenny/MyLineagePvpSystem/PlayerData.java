@@ -1,6 +1,7 @@
 package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
@@ -14,6 +15,8 @@ public class PlayerData {
 
     private int soeTimeout = -1;
     private int callTimeout = -1;
+    public Player target;
+    public Location locationCaller;
 
     public PlayerData(Players players) {
         this.players = players;
@@ -168,7 +171,42 @@ public class PlayerData {
             return false;
         }
 
-        soeTimeout = -1;
+        soeTimeout = -1; // Вызывая метод, сбрасываю вызов игрока
+
+        return true;
+
+    }
+
+    /**
+     * Стартует Свиток призыва
+     */
+    public void startCall(Player target) {
+        callTimeout = players.plugin.config.getInt("time.call");
+        this.target = target;
+    }
+
+    /**
+     * Тик на использование скрола
+     *
+     * @return признак, что игрок завершил призыв
+     */
+    public boolean tickCall() {
+        callTimeout--;
+
+        return callTimeout == 0;
+    }
+
+    /**
+     * Игрок в режиме вызова
+     * @return boolean
+     */
+    public boolean inCall() {
+        if(callTimeout <= 0) {
+
+            return false;
+        }
+
+        callTimeout = -1; // Вызывая метод, сбрасываю вызов игрока
 
         return true;
 

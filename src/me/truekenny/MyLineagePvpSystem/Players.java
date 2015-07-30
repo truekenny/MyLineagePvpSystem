@@ -105,6 +105,25 @@ public class Players {
                     player.teleport(spawn);
                     player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
                 }
+
+                if (playerData.tickCall()) {
+                    if(playerData.target != null) {
+                        player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.player"));
+                        playerData.target.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.tagret").replaceFirst("_PLAYER_", player.getDisplayName()));
+
+                        PlayerData targetData = this.getPlayerData(playerData.target);
+                        targetData.locationCaller = player.getLocation();
+
+                        playerData.target = null;
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
+                    }
+                    else if(playerData.locationCaller != null) {
+                        player.teleport(playerData.locationCaller);
+                        playerData.locationCaller = null;
+
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
+                    }
+                }
             }
         }
     }
