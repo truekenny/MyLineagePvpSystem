@@ -49,7 +49,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         log("MyLineagePvpSystem has been enabled!");
 
         taskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, new ColorTask(this), 0, 20);
-        taskIdSoe = getServer().getScheduler().scheduleSyncRepeatingTask(this, new SoeTask(this), 0, 20);
+        taskIdSoe = getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickerTask(this), 0, 20);
     }
 
     public void onDisable() {

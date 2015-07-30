@@ -85,7 +85,7 @@ public class Players {
     /**
      * Проверяет игроков, которые используют свиток возврата
      */
-    public void updateSoe() {
+    public void updateTick() {
         Enumeration<String> e = playerDataHashtable.keys();
         Player player;
 

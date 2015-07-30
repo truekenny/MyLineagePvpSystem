@@ -11,7 +11,9 @@ public class PlayerData {
     private int pvp = 0;
     private int pk = 0;
     private int death = 0;
+
     private int soeTimeout = -1;
+    private int callTimeout = -1;
 
     public PlayerData(Players players) {
         this.players = players;
@@ -151,7 +153,6 @@ public class PlayerData {
      * @return признак, что игрока надо портовать на спавн
      */
     public boolean tickSoe() {
-        // players.plugin.log("tickSoe " + String.valueOf(soeTimeout));
         soeTimeout--;
 
         return soeTimeout == 0;
@@ -159,7 +160,7 @@ public class PlayerData {
 
     /**
      * Игрок в режиме возврата
-     * @return
+     * @return boolean
      */
     public boolean inSoe() {
         if(soeTimeout <= 0) {
