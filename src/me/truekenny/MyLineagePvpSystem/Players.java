@@ -109,7 +109,7 @@ public class Players {
                 if (playerData.tickCall()) {
                     if(playerData.target != null) {
                         player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.player"));
-                        playerData.target.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.tagret").replaceFirst("_PLAYER_", player.getDisplayName()));
+                        playerData.target.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.target").replaceFirst("_PLAYER_", player.getDisplayName()));
 
                         PlayerData targetData = this.getPlayerData(playerData.target);
                         targetData.locationCaller = player.getLocation();
@@ -118,6 +118,8 @@ public class Players {
                         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
                     }
                     else if(playerData.locationCaller != null) {
+                        player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.player"));
+
                         player.teleport(playerData.locationCaller);
                         playerData.locationCaller = null;
 
