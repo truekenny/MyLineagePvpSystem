@@ -65,7 +65,7 @@ public class PvpCallCommand implements CommandExecutor {
 
             player.sendMessage(ChatColor.RED + plugin.config.getString("local.call.use.notarget"));
 
-            return true;
+            return false;
         }
 
         return false;
