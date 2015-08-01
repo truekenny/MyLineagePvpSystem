@@ -99,6 +99,8 @@ public class MyLineagePvpSystem extends JavaPlugin {
         {
             config.addDefault("spawn.protect.lava.bucket.radius", 50);
             config.addDefault("spawn.protect.lava.bucket.message", "You cant place lava here!");
+            config.addDefault("spawn.protect.flint.radius", 50);
+            config.addDefault("spawn.protect.flint.message", "You cant use flint here!");
 
         }
 
