@@ -27,7 +27,7 @@ public class Players {
     public Players(MyLineagePvpSystem plugin) {
         this.plugin = plugin;
 
-        getSpawn();
+        calcSpawn();
         load();
     }
 
@@ -260,7 +260,7 @@ public class Players {
     /**
      * Устанавливает локацию для SOE
      */
-    private void getSpawn() {
+    private void calcSpawn() {
         World world = plugin.getServer().getWorld("world");
 
         if (world == null) {
@@ -286,5 +286,13 @@ public class Players {
         }
 
         spawn = location1;
+    }
+
+    /**
+     * Возвращает спавн
+     * @return
+     */
+    public Location getSpawn() {
+        return spawn;
     }
 }

@@ -96,6 +96,12 @@ public class MyLineagePvpSystem extends JavaPlugin {
             config.addDefault("local.call.cancel", "Scroll of call canceled");
         }
 
+        {
+            config.addDefault("spawn.protect.lava.bucket.radius", 50);
+            config.addDefault("spawn.protect.lava.bucket.message", "You cant place lava here!");
+
+        }
+
         config.addDefault("drop.inventory.peace", 0);
         config.addDefault("drop.inventory.pvp", 10);
         config.addDefault("drop.inventory.pk", 100);

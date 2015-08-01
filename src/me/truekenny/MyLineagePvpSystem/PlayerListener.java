@@ -1,6 +1,7 @@
 package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -417,6 +419,24 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         setKillerEffects(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onClick(PlayerBucketEmptyEvent event) {
+        Player player = event.getPlayer();
+        if (event.getBucket().getId() == 327) {
+
+            Location spawn = plugin.players.getSpawn();
+            Location playerLocation = event.getPlayer().getLocation();
+            double distance = spawn.distance(playerLocation);
+
+            if ((spawn != null) && (distance < plugin.config.getDouble("spawn.protect.lava.bucket.radius"))) {
+                event.setCancelled(true);
+                player.sendMessage(plugin.config.getString("spawn.protect.lava.bucket.message"));
+                plugin.log("Distane: " + distance);
+
+            }
+        }
     }
 }
 
