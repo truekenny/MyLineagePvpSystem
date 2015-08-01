@@ -425,6 +425,11 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onClick(PlayerBucketEmptyEvent event) {
+        if(event.getPlayer().isOp()) {
+
+            return;
+        }
+
         if (event.getBucket().getId() == 327) {
 
             Location spawn = plugin.players.getSpawn();
@@ -457,6 +462,11 @@ public class PlayerListener implements Listener {
     public void onPlayerUse(PlayerInteractEvent event){
         Player p = event.getPlayer();
 
+        if(p.isOp()) {
+
+            return;
+        }
+
         if(p.getItemInHand().getType() == Material.FLINT_AND_STEEL){
             Location spawn = plugin.players.getSpawn();
             Location playerLocation = event.getPlayer().getLocation();
@@ -474,7 +484,7 @@ public class PlayerListener implements Listener {
 
             if (distance < plugin.config.getDouble("spawn.protect.flint.radius")) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(plugin.config.getString("spawn.protect.flint.message"));
+                p.sendMessage(plugin.config.getString("spawn.protect.flint.message"));
                 plugin.log("Distance flint: " + distance);
             }
 
