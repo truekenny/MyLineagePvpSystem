@@ -434,7 +434,12 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            double distance = spawn.distance(playerLocation);
+            double distance;
+            try {
+                distance = spawn.distance(playerLocation);
+            } catch (Exception e) {
+                return;
+            }
 
             if (distance < plugin.config.getDouble("spawn.protect.lava.bucket.radius")) {
                 event.setCancelled(true);
@@ -460,7 +465,12 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            double distance = spawn.distance(playerLocation);
+            double distance;
+            try {
+                distance = spawn.distance(playerLocation);
+            } catch (Exception e) {
+                return;
+            }
 
             if (distance < plugin.config.getDouble("spawn.protect.flint.radius")) {
                 event.setCancelled(true);
