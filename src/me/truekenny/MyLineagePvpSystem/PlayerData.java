@@ -13,10 +13,14 @@ public class PlayerData {
     private int pk = 0;
     private int death = 0;
 
+    private int[] home = {-1,-1,-1};
+
     private int soeTimeout = -1;
     private int callTimeout = -1;
     public Player target;
     public Location locationCaller;
+    private int homeTimeout = -1;
+    public boolean set = false; // setHome
 
     public PlayerData(Players players) {
         this.players = players;
@@ -212,6 +216,41 @@ public class PlayerData {
 
     }
 
+    /**
+     * Стартует Свиток домой
+     */
+    public void startHome(boolean set) {
+        homeTimeout = players.plugin.config.getInt("time.home");
+        this.set = set;
+    }
+
+    /**
+     * Тик на использование скрола
+     *
+     * @return признак, что игрок завершил призыв
+     */
+    public boolean tickHome() {
+        homeTimeout--;
+
+        return homeTimeout == 0;
+    }
+
+    /**
+     * Игрок в режиме домой
+     * @return boolean
+     */
+    public boolean inHome() {
+        if(homeTimeout <= 0) {
+
+            return false;
+        }
+
+        homeTimeout = -1; // Вызывая метод, сбрасываю вызов игрока
+
+        return true;
+
+    }
+
     public int getPk() {
         return pk;
     }
@@ -242,5 +281,13 @@ public class PlayerData {
 
     public void setDeath(int death) {
         this.death = death;
+    }
+
+    public int[] getHome() {
+        return home;
+    }
+
+    public void setHome(int[] home) {
+        this.home = home;
     }
 }

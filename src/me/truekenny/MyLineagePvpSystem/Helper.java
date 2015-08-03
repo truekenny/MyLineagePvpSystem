@@ -2,6 +2,8 @@ package me.truekenny.MyLineagePvpSystem;
 
 import org.bukkit.Location;
 
+import java.util.Random;
+
 public class Helper {
 
     /**
@@ -18,5 +20,11 @@ public class Helper {
                         Math.pow(a.getBlockZ() - b.getBlockZ(), 2)
 
         );
+    }
+
+    public static double rand(double rangeMin, double rangeMax) {
+        Random random = new Random();
+
+        return rangeMin + (rangeMax - rangeMin) * random.nextDouble();
     }
 }

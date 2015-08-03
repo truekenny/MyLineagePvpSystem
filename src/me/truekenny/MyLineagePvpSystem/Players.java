@@ -7,9 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
+import java.util.*;
 
 //import org.kitteh.tag.TagAPI;
 
@@ -126,6 +124,28 @@ public class Players {
                         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
                     }
                 }
+
+                if (playerData.tickHome()) {
+                    if(playerData.set) {
+                        int[] home = {player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()};
+                        playerData.setHome(home);
+                        player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.home.finish"));
+                    }
+                    else {
+                        if(spawn == null) {
+
+                            return;
+                        }
+                        int[] home = playerData.getHome();
+                        Location location = new Location(plugin.getServer().getWorld("world"),
+                                home[0] + 0.5 + Helper.rand(-2, 2),
+                                home[1],
+                                home[2] + 0.5 + + Helper.rand(-2, 2));
+                        player.teleport(location);
+                    }
+                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
+                }
+
             }
         }
     }
@@ -205,11 +225,24 @@ public class Players {
                 String karma = st.nextToken();
                 String death = st.nextToken();
 
+                String x = "-1";
+                String y = "-1";
+                String z = "-1";
+
+                if(st.hasMoreTokens()) {
+                    x = st.nextToken();
+                    y = st.nextToken();
+                    z = st.nextToken();
+                }
+
                 PlayerData playerData = new PlayerData(this);
                 playerData.setPk(Integer.parseInt(pk));
                 playerData.setPvp(Integer.parseInt(pvp));
                 playerData.setKarma(Integer.parseInt(karma));
                 playerData.setDeath(Integer.parseInt(death));
+
+                int[] home = {Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)};
+                playerData.setHome(home);
                 playerDataHashtable.put(nick, playerData);
 
             }
@@ -241,15 +274,25 @@ public class Players {
             return false;
         }
 
+        int[] defaultHome = {-1,-1,-1};
+
         while (e.hasMoreElements()) {
             String nick = e.nextElement();
             PlayerData playerData = playerDataHashtable.get(nick);
 
-            if (playerData.getPk() == 0 & playerData.getPvp() == 0 & playerData.getKarma() == 0 & playerData.getDeath() == 0) {
+            int[] home = playerData.getHome();
+
+            if (
+                    playerData.getPk() == 0
+                    && playerData.getPvp() == 0
+                    && playerData.getKarma() == 0
+                    && playerData.getDeath() == 0
+                    && Arrays.equals(home, defaultHome)
+            ) {
                 continue;
             }
 
-            out.printf("%s %d %d %d %d\n", nick, playerData.getPk(), playerData.getPvp(), playerData.getKarma(), playerData.getDeath());
+            out.printf("%s %d %d %d %d %d %d %d\n", nick, playerData.getPk(), playerData.getPvp(), playerData.getKarma(), playerData.getDeath(), home[0], home[1], home[2]);
         }
 
         out.close();

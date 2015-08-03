@@ -353,6 +353,9 @@ public class PlayerListener implements Listener {
         if (plugin.players.getPlayerData(player).inCall()) {
             player.sendMessage(ChatColor.RED + plugin.config.getString("local.call.cancel"));
         }
+        if (plugin.players.getPlayerData(player).inHome()) {
+            player.sendMessage(ChatColor.RED + plugin.config.getString("local.home.cancel"));
+        }
     }
 
     /**

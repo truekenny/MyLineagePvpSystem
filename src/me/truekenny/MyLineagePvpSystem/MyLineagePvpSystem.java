@@ -46,6 +46,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         getCommand("pvpspawn").setExecutor(new PvpSpawnCommand(this));
         getCommand("pvpsoe").setExecutor(new PvpSoeCommand(this));
         getCommand("pvpcall").setExecutor(new PvpCallCommand(this));
+        getCommand("pvphome").setExecutor(new PvpHomeCommand(this));
 
         log("MyLineagePvpSystem has been enabled!");
 
@@ -97,6 +98,15 @@ public class MyLineagePvpSystem extends JavaPlugin {
         }
 
         {
+            config.addDefault("local.home.set", "You set point of return home, do not move to continue his actions");
+            config.addDefault("local.home.use", "You use the scroll of return home, do not move to continue his actions");
+            config.addDefault("local.home.finish", "The point of the house is set");
+            config.addDefault("local.home.error", "You do not have a house, to set a use '/pvphome set'");
+            config.addDefault("local.home.cancel", "Scroll of return home canceled");
+            config.addDefault("local.home.bad.world", "You can not set the house in this world");
+        }
+
+        {
             config.addDefault("spawn.protect.lava.bucket.radius", 50);
             config.addDefault("spawn.protect.lava.bucket.message", "You cant place lava here!");
             config.addDefault("spawn.protect.flint.radius", 50);
@@ -126,6 +136,7 @@ public class MyLineagePvpSystem extends JavaPlugin {
         config.addDefault("time.purple", 30);
         config.addDefault("time.soe", 30);
         config.addDefault("time.call", 30);
+        config.addDefault("time.home", 30);
 
         config.addDefault("rpg.enable", false);
         config.addDefault("rpg.difficulty", 0.33);
