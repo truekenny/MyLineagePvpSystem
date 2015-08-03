@@ -45,7 +45,7 @@ public class PvpCallCommand implements CommandExecutor {
 
             if (target != null) {
                 player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.start").replaceFirst("_TARGET_", target.getDisplayName()));
-                plugin.players.getPlayerData(player).startCall(target);
+                plugin.players.getPlayerData(player).startCall(target, player);
 
                 return true;
             }
@@ -58,7 +58,7 @@ public class PvpCallCommand implements CommandExecutor {
 
             if(location != null) {
                 player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.accept"));
-                plugin.players.getPlayerData(player).startCall(null);
+                plugin.players.getPlayerData(player).startCall(null, player);
 
                 return true;
             }

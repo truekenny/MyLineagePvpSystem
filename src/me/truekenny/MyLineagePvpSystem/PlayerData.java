@@ -3,6 +3,8 @@ package me.truekenny.MyLineagePvpSystem;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class PlayerData {
     private int karma = 0;
@@ -150,8 +152,9 @@ public class PlayerData {
     /**
      * Стартует Свиток возврата
      */
-    public void startSoe() {
+    public void startSoe(Player player) {
         soeTimeout = players.plugin.config.getInt("time.soe");
+        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, soeTimeout * 20, 1));
     }
 
     /**
@@ -184,9 +187,10 @@ public class PlayerData {
     /**
      * Стартует Свиток призыва
      */
-    public void startCall(Player target) {
+    public void startCall(Player target, Player player) {
         callTimeout = players.plugin.config.getInt("time.call");
         this.target = target;
+        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, callTimeout * 20, 1));
     }
 
     /**
@@ -219,9 +223,11 @@ public class PlayerData {
     /**
      * Стартует Свиток домой
      */
-    public void startHome(boolean set) {
+    public void startHome(boolean set, Player player) {
         homeTimeout = players.plugin.config.getInt("time.home");
         this.set = set;
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, homeTimeout * 20, 1));
     }
 
     /**

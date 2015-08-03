@@ -349,12 +349,15 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         if (plugin.players.getPlayerData(player).inSoe()) {
             player.sendMessage(ChatColor.RED + plugin.config.getString("local.soe.cancel"));
+            player.removePotionEffect(PotionEffectType.CONFUSION);
         }
         if (plugin.players.getPlayerData(player).inCall()) {
             player.sendMessage(ChatColor.RED + plugin.config.getString("local.call.cancel"));
+            player.removePotionEffect(PotionEffectType.CONFUSION);
         }
         if (plugin.players.getPlayerData(player).inHome()) {
             player.sendMessage(ChatColor.RED + plugin.config.getString("local.home.cancel"));
+            player.removePotionEffect(PotionEffectType.CONFUSION);
         }
     }
 

@@ -44,7 +44,7 @@ public class PvpHomeCommand implements CommandExecutor {
                 }
 
                 player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.home.set"));
-                plugin.players.getPlayerData(player).startHome(true);
+                plugin.players.getPlayerData(player).startHome(true, player);
 
                 return true;
             }
@@ -62,7 +62,7 @@ public class PvpHomeCommand implements CommandExecutor {
             }
 
             player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.home.use"));
-            plugin.players.getPlayerData(player).startHome(false);
+            plugin.players.getPlayerData(player).startHome(false, player);
 
             return true;
         }

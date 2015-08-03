@@ -37,7 +37,7 @@ public class PvpSoeCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.soe.use"));
-        plugin.players.getPlayerData(player).startSoe();
+        plugin.players.getPlayerData(player).startSoe(player);
 
         return true;
     }
