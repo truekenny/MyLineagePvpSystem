@@ -7,7 +7,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 //import org.kitteh.tag.TagAPI;
 
@@ -59,23 +62,12 @@ public class Players {
      * Отправляет инф-ию о смене цвета
      */
     public void updateColor() {
-        Enumeration<String> e = playerDataHashtable.keys();
-        Player player;
-
-        while (e.hasMoreElements()) {
-            String nick = e.nextElement();
-            PlayerData playerData = playerDataHashtable.get(nick);
+        for (Player player : plugin.colorListener.getOnlinePlayers()) {
+            PlayerData playerData = playerDataHashtable.get(player.getDisplayName());
 
             if (playerData.colorChanged()) {
-
-                player = plugin.getServer().getPlayer(nick);
-
-                if (player != null) {
-                    //TagAPI.refreshPlayer(player);
-                    plugin.colorListener.updateColor(player);
-
-                    sendColorMessage(playerData.getColor(), player);
-                }
+                plugin.colorListener.updateColor(player);
+                sendColorMessage(playerData.getColor(), player);
             }
         }
     }
@@ -84,69 +76,61 @@ public class Players {
      * Проверяет игроков, которые используют свиток возврата
      */
     public void updateTick() {
-        Enumeration<String> e = playerDataHashtable.keys();
-        Player player;
-
-        if(spawn == null) {
+        if (spawn == null) {
 
             return;
         }
 
-        while (e.hasMoreElements()) {
-            String nick = e.nextElement();
-            player = plugin.getServer().getPlayer(nick);
+        for (Player player : plugin.colorListener.getOnlinePlayers()) {
+            PlayerData playerData = playerDataHashtable.get(player.getDisplayName());
 
-            if (player != null) {
-                PlayerData playerData = playerDataHashtable.get(nick);
 
-                if (playerData.tickSoe()) {
-                    player.teleport(spawn);
-                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
-                }
-
-                if (playerData.tickCall()) {
-                    if(playerData.target != null) {
-                        player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.player"));
-                        playerData.target.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.target").replaceFirst("_PLAYER_", player.getDisplayName()));
-
-                        PlayerData targetData = this.getPlayerData(playerData.target);
-                        targetData.locationCaller = player.getLocation();
-
-                        playerData.target = null;
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
-                    }
-                    else if(playerData.locationCaller != null) {
-                        player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.player"));
-
-                        player.teleport(playerData.locationCaller);
-                        playerData.locationCaller = null;
-
-                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
-                    }
-                }
-
-                if (playerData.tickHome()) {
-                    if(playerData.set) {
-                        int[] home = {player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()};
-                        playerData.setHome(home);
-                        player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.home.finish"));
-                    }
-                    else {
-                        if(spawn == null) {
-
-                            return;
-                        }
-                        int[] home = playerData.getHome();
-                        Location location = new Location(plugin.getServer().getWorld("world"),
-                                home[0] + 0.5 + Helper.rand(-2, 2),
-                                home[1],
-                                home[2] + 0.5 + + Helper.rand(-2, 2));
-                        player.teleport(location);
-                    }
-                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
-                }
-
+            if (playerData.tickSoe()) {
+                player.teleport(spawn);
+                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
             }
+
+            if (playerData.tickCall()) {
+                if (playerData.target != null) {
+                    player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.player"));
+                    playerData.target.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.target").replaceFirst("_PLAYER_", player.getDisplayName()));
+
+                    PlayerData targetData = this.getPlayerData(playerData.target);
+                    targetData.locationCaller = player.getLocation();
+
+                    playerData.target = null;
+                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
+                } else if (playerData.locationCaller != null) {
+                    player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.call.use.finish.player"));
+
+                    player.teleport(playerData.locationCaller);
+                    playerData.locationCaller = null;
+
+                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
+                }
+            }
+
+            if (playerData.tickHome()) {
+                if (playerData.set) {
+                    int[] home = {player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()};
+                    playerData.setHome(home);
+                    player.sendMessage(ChatColor.GREEN + plugin.config.getString("local.home.finish"));
+                } else {
+                    if (spawn == null) {
+
+                        return;
+                    }
+                    int[] home = playerData.getHome();
+                    Location location = new Location(plugin.getServer().getWorld("world"),
+                            home[0] + 0.5 + Helper.rand(-2, 2),
+                            home[1],
+                            home[2] + 0.5 + +Helper.rand(-2, 2));
+                    player.teleport(location);
+                }
+                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 1);
+            }
+
+
         }
     }
 
@@ -229,7 +213,7 @@ public class Players {
                 String y = "-1";
                 String z = "-1";
 
-                if(st.hasMoreTokens()) {
+                if (st.hasMoreTokens()) {
                     x = st.nextToken();
                     y = st.nextToken();
                     z = st.nextToken();
@@ -274,7 +258,7 @@ public class Players {
             return false;
         }
 
-        int[] defaultHome = {-1,-1,-1};
+        int[] defaultHome = {-1, -1, -1};
 
         while (e.hasMoreElements()) {
             String nick = e.nextElement();
@@ -333,6 +317,7 @@ public class Players {
 
     /**
      * Возвращает спавн
+     *
      * @return
      */
     public Location getSpawn() {
