@@ -115,7 +115,7 @@ public class ColorListener implements Listener {
             return;
         }
 
-        if (plugin.myVIP != null && plugin.myVIP.isVip(player)) {
+        if ((plugin.myVIP != null) && (plugin.myVIP.isVip(player))) {
             scoreboard.getTeam("VIP").addPlayer(player);
 
             return;
