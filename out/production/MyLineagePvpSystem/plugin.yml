@@ -1,6 +1,6 @@
 name: MyLineagePvpSystem
 main: me.truekenny.MyLineagePvpSystem.MyLineagePvpSystem
-version: 1.2.16
+version: 1.2.17
 commands:
   pvpstatus:
     description: Displays user status.

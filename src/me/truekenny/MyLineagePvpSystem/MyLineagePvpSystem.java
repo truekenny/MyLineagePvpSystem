@@ -1,7 +1,9 @@
 package me.truekenny.MyLineagePvpSystem;
 
+import me.truekenny.MyVIP.iMyVIP;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +17,8 @@ public class MyLineagePvpSystem extends JavaPlugin {
     private int taskId;
     private int taskIdSoe;
 
+    public iMyVIP myVIP;
+
     /**
      * Экземпляр конфигурации
      */
@@ -26,6 +30,11 @@ public class MyLineagePvpSystem extends JavaPlugin {
         players = new Players(this);
 
         PluginManager pm = getServer().getPluginManager();
+
+        Plugin plugin = pm.getPlugin("MyVIP");
+        if (plugin != null) {
+            myVIP = (iMyVIP) plugin;
+        }
 
         colorListener = new ColorListener(this);
         pm.registerEvents(colorListener, this);

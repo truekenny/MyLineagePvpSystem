@@ -45,6 +45,7 @@ public class ColorListener implements Listener {
         initializeTeam("LIGHT_PURPLE", ChatColor.LIGHT_PURPLE.toString(), "");
         initializeTeam("WHITE", /*ChatColor.WHITE.toString()*/"", "");
         initializeTeam("OP", ChatColor.GREEN.toString(), "");
+        initializeTeam("VIP", ChatColor.YELLOW.toString(), "");
         teams = Lists.newArrayList(scoreboard.getTeams());
 
         updatePlayers();
@@ -113,6 +114,13 @@ public class ColorListener implements Listener {
 
             return;
         }
+
+        if (plugin.myVIP != null && plugin.myVIP.isVip(player)) {
+            scoreboard.getTeam("VIP").addPlayer(player);
+
+            return;
+        }
+
         scoreboard.getTeam("WHITE").addPlayer(player);
     }
 
